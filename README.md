@@ -1,3 +1,24 @@
+#### A react app for visualizing binary trees to reduce the iteration time while developing binary tree classes
+
+
+
+
+---
+
+Credit:
+
+d3 code to create the graph copied from here and modified:
+http://bl.ocks.org/d3noob/8326869
+
+Which gives credit to here:
+https://observablehq.com/@d3/collapsible-tree
+
+
+React boilerplate:
+
+---
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
@@ -66,3 +87,9 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+
+
+
+
+
