@@ -5,16 +5,18 @@ import * as actions from '../store/actions.js';
 
 const mapDispatchToProps = (dispatch) => {
   return ({
-    updateRawData: (payload) => dispatch(actions.updateRawData(payload)),
     updateD3Data: (payload) => dispatch(actions.updateD3Data(payload)),
   });
 }
+const mapStateToProps = (state) => {
+  return({
+    nodeCount: state.nodeCount,
+  });
+};
 
 const Logic = (props) => {
 
-  let myTree = generateTree(10);
-
-  props.updateRawData(myTree);
+  let myTree = generateTree(props.nodeCount);
 
   let treeCopy = copyTree(myTree);
 
@@ -81,4 +83,4 @@ class CopyNode{
   }
 }
 
-export default connect(null, mapDispatchToProps)(Logic);
+export default connect(mapStateToProps, mapDispatchToProps)(Logic);

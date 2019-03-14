@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 const mapStateToProps = (state) => {
   return ({
     data: state.d3Data,
+    displayNumbers: state.displayNumbers,
   });
 }
 
@@ -15,8 +16,10 @@ class Graph extends React.Component {
     this.drawChart();
   }
 
-  drawChart = () => {
+  drawChart() {
 
+    let data = this.props.data;
+    let displayNumbers = this.props.displayNumbers;
     // remove existing chart
     let chartExists = d3.selectAll("svg")._groups[0].length;
     if(chartExists){
@@ -30,7 +33,7 @@ class Graph extends React.Component {
     
     let i = 0;
 
-    let root = d3.hierarchy(this.props.data);
+    let root = d3.hierarchy(data);
     let tree = d3.tree()
       .size([height, width]);
 
@@ -77,7 +80,13 @@ class Graph extends React.Component {
         // return d.children || d._children ? -22 : 22; })
       .attr("dy", ".35em")
       .attr("text-anchor", "middle")
-      .text(function(d) { return d.data.value})
+      .text(function(d) {
+        console.log(`displayNumbers: `, displayNumbers);
+        // console.log(`this.props 🕧`, this.props)
+        if(displayNumbers){
+          return d.data.value
+        }
+      })
       .style("fill-opacity", 1);
 
     // Declare the links…

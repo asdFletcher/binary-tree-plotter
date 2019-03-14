@@ -23,26 +23,38 @@ const initialState = {
       }
     ]
   },
-  rawData: {
-
-  }
+  nodeCount: 10,
+  displayNumbers: true,
 };
 
 const store = (state = initialState, action) => {
   let { type, payload } = action;
   switch(type) {
-    case "UPDATE_RAW_DATA": {
-      const newState = {
-        ...state,
-        rawData: payload,
-      }
-      return newState;
-    }
     case "UPDATE_D3_DATA": {
       const newState = {
         ...state,
         d3Data: payload,
       }
+      return newState;
+    }
+    case "UPDATE_NODE_COUNT": {
+      const newState = {
+        ...state,
+        nodeCount: payload,
+      }
+      return newState;
+    }
+    case "TOGGLE_NUMBERS": {
+
+      const newState = {
+        ...state,
+      }
+      if(state.displayNumbers){
+        newState.displayNumbers = false;
+      } else {
+        newState.displayNumbers = true;
+      }
+      console.log(newState.displayNumbers);
       return newState;
     }
     default: {
