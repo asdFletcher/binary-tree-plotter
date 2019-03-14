@@ -1,6 +1,13 @@
 import React from 'react';
-import './styles/App.css';
+import '../styles/App.css';
 import * as d3 from "d3";
+import { connect } from 'react-redux';
+
+const mapStateToProps = (state) => {
+  return ({
+    data: state.d3Data,
+  });
+}
 
 class Graph extends React.Component {
 
@@ -10,40 +17,20 @@ class Graph extends React.Component {
 
   drawChart = () => {
 
-    let treeData = 
-      {
-        "name": "Top Level",
-        "parent": "null",
-        "children": [
-          {
-            "name": "Level 2: A",
-            "parent": "Top Level",
-            "children": [
-              {
-                "name": "Son of A",
-                "parent": "Level 2: A"
-              },
-              {
-                "name": "Daughter of A",
-                "parent": "Level 2: A"
-              }
-            ]
-          },
-          {
-            "name": "Level 2: B",
-            "parent": "Top Level"
-          }
-        ]
-    };
-    
+    // remove existing chart
+    let chartExists = d3.selectAll("svg")._groups[0].length;
+    if(chartExists){
+      d3.select("svg").remove();
+    }
+
     // ************** Generate the tree diagram	 *****************
     let margin = {top: 40, right: 120, bottom: 20, left: 120};
     let width = 960 - margin.right - margin.left;
-    let height = 500 - margin.top - margin.bottom;
+    let height = 750 - margin.top - margin.bottom;
     
     let i = 0;
 
-    let root = d3.hierarchy(treeData);
+    let root = d3.hierarchy(this.props.data);
     let tree = d3.tree()
       .size([height, width]);
 
@@ -63,7 +50,7 @@ class Graph extends React.Component {
     let links = tree.links();
 
     // Normalize for fixed-depth.
-    nodes.forEach(function(d) { d.y = d.depth * 100; });
+    nodes.forEach(function(d) { d.y = d.depth * 75; });
 
     // Declare the nodes…
     let node = svg.selectAll("g.node")
@@ -71,20 +58,26 @@ class Graph extends React.Component {
 
     // Enter the nodes.
     let nodeEnter = node.enter().append("g")
-      .attr("class", "node")
+      .attr("class", function(d) {
+        if(isNaN(d.value)){
+          return "node hide";
+        } else {
+          return "node";
+        }
+      })
       .attr("transform", function(d) { 
-        return "translate(" + d.x + "," + d.y + ")"; });
+        return "translate(" + d.x + "," + d.y + ")"; })
 
     nodeEnter.append("circle")
-      .attr("r", 10)
+      .attr("r", 20)
       .style("fill", "#fff");
 
     nodeEnter.append("text")
-      .attr("y", function(d) { 
-        return d.children || d._children ? -18 : 18; })
+      // .attr("y", function(d) { 
+        // return d.children || d._children ? -22 : 22; })
       .attr("dy", ".35em")
       .attr("text-anchor", "middle")
-      .text(function(d) { return d.name; })
+      .text(function(d) { return d.data.value})
       .style("fill-opacity", 1);
 
     // Declare the links…
@@ -93,13 +86,20 @@ class Graph extends React.Component {
 
     // Enter the links.
     link.enter().insert("path", "g")
-      .attr("class", "link")
+      .attr("class", function(d){
+        if(isNaN(d.target.value)){
+          return "link hide";
+        } else {
+          return "link";
+        }
+      })
       .attr("d", diagonal);
   }
 
   render() {
+    this.drawChart();
     return null;
   }
 }
 
-export default Graph;
+export default connect(mapStateToProps)(Graph);

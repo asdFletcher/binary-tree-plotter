@@ -3,12 +3,17 @@
   stroke: steelblue;
   stroke-width: 3px;
 }
+
 .node text { 
-  font: 12px sans-serif;
+  font: 24px sans-serif;
 }
 
 .link {
   fill: none;
   stroke: #ccc;
   stroke-width: 2px;
+}
+
+.hide {
+  display: none;
 }
