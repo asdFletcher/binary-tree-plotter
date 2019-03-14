@@ -1,5 +1,3 @@
-'use strict';
-
 class Node {
   constructor(value){
     this.value = value;
@@ -8,4 +6,4 @@ class Node {
   }
 }
 
-module.exports = Node;
+export default Node;

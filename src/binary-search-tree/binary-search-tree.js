@@ -1,6 +1,4 @@
-'use strict';
-
-const Node = require('./binary-search-tree-node.js');
+import Node from './binary-search-tree-node.js';
 
 class BinarySearchTree {
 
@@ -10,40 +8,27 @@ class BinarySearchTree {
 
   insert(value){
     let newNode = new Node(value);
-
+    
     if(!this.root){ this.root = newNode; }
-
+    
     function _go(node){
-      if(this.isLarger(node, newNode)) {
-        if(this._hasRight(node)){
+      if(newNode.value > node.value){
+        if(node.right) {
           _go(node.right);
+        } else {
+          node.right = newNode;
         }
-        node.right = newNode;
       }
-      if(this._isSmaller(node, newNode)) {
-        if(this._hasLeft(node)){
+      if(newNode.value < node.value){
+        if(node.left) {
           _go(node.left);
+        } else {
+          node.left = newNode;
         }
-        node.left = newNode;
       }
     }
-    _go(this.root);
-  }
 
-  _isLarger(existingNode, newNode) {
-    return newNode.value > existingNode.value;
-  }
-  _isSmaller(existingNode, newNode) {
-    return newNode.value < existingNode.value;
-  }
-  _isEqual(existingNode, newNode) {
-    return newNode.value === existingNode.value;
-  }
-  _hasLeft(node){
-    return node.left;
-  }
-  _hasRight(node){
-    return node.right;
+    _go(this.root);
   }
 
   // insert
@@ -54,4 +39,4 @@ class BinarySearchTree {
   // print (in order, pre order, post order)
 }
 
-module.exports = BinarySearchTree;
+export default BinarySearchTree;
