@@ -1,3 +1,6 @@
+import React from 'react';
+import Form from "./form.js";
+import Graph from "./graph.js";
 import BinarySearchTree from "../binary-search-tree/binary-search-tree.js";
 import Node from "../binary-search-tree/binary-search-tree-node.js";
 import { connect } from 'react-redux';
@@ -8,21 +11,72 @@ const mapDispatchToProps = (dispatch) => {
     updateD3Data: (payload) => dispatch(actions.updateD3Data(payload)),
   });
 }
-const mapStateToProps = (state) => {
+const mapStateToProps = (store) => {
   return({
-    nodeCount: state.nodeCount,
+    nodeCount: store.nodeCount,
   });
 };
 
-const Logic = (props) => {
+class Logic extends React.Component {
 
-  let myTree = generateTree(props.nodeCount);
+  constructor(props){
+    super(props);
+    this.tree = new BinarySearchTree();
+  }
+  
+  async componentDidMount(){
+    this.tree = generateTree(this.props.nodeCount);
+    this.copyAndUpdateD3Data();
+  }
 
-  let treeCopy = copyTree(myTree);
+  copyAndUpdateD3Data = () => {
+    let treeCopyForD3 = copyTree(this.tree);
+    this.props.updateD3Data(treeCopyForD3);
+  }
 
-  props.updateD3Data(treeCopy);
+  addNode = (val) => {
+    this.tree.insert(val);
+    this.copyAndUpdateD3Data();
+  }
+  addRandomNode = () => {
+    let num = this.calcRandom();
+    this.tree.insert(num);
+    this.copyAndUpdateD3Data();
+  }
 
-  return null;
+  removeNode = (value) => {
+    console.log(`in it `, value);
+    console.log(`tree before: `, this.tree);
+    this.tree.remove(value);
+    console.log(`tree after: `, this.tree);
+    this.copyAndUpdateD3Data();
+  }
+
+  handleGenerateTree = async (numberOfNodes) => {
+    numberOfNodes = parseInt(numberOfNodes);
+    this.tree = await generateTree(numberOfNodes);
+    this.copyAndUpdateD3Data();
+  }
+  
+  calcRandom = () => {
+    let num = Math.floor(Math.random()*100);
+    return num;
+  }
+
+  render(){
+    return (
+      <>
+        <Form 
+          addNode={this.addNode}
+          addRandomNode={this.addRandomNode}
+          generateTree={this.handleGenerateTree}
+          resetTree={() => this.handleGenerateTree(0)}
+          removeNode={this.removeNode}
+        />
+        <Graph />
+      </>
+    );
+  }
 }
 
 const generateTree = (numberOfNodes) => {
@@ -40,8 +94,12 @@ const generateTree = (numberOfNodes) => {
 const generateUniqueNumbers = (count) => {
   let result = [];
 
+  let defaultMaxValue = 100;
+  if (count > defaultMaxValue) {
+    defaultMaxValue = count * 2;
+  }
   while(result.length < count){
-    let num = Math.floor(Math.random()*100);
+    let num = Math.floor(Math.random()*defaultMaxValue);
     if(!result.includes(num)){
       result.push(num);
     }

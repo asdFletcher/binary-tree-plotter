@@ -5,12 +5,12 @@ export const updateD3Data = (payload) => {
   }
 }
 
-export const updateNodeCount = (payload) => {
-  return {
-    type: "UPDATE_NODE_COUNT",
-    payload: payload
-  }
-}
+// export const updateNodeCount = (payload) => {
+//   return {
+//     type: "UPDATE_NODE_COUNT",
+//     payload: payload
+//   }
+// }
 
 export const toggleNumbers = () => {
   return {
