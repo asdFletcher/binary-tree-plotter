@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 
 const mapDispatchToProps = (dispatch) => {
   return ({
-    updateNodeCount: (payload) => dispatch(actions.updateNodeCount(payload)),
     toggleNumbers: () => dispatch(actions.toggleNumbers()),
   });
 };
@@ -22,31 +21,74 @@ class Form extends React.Component{
   }
 
   handleChange = (e) => {
-    this.setState({nodeCount: e.target.value});
+    this.setState({[e.target.name]: e.target.value});
   }
-  
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.props.updateNodeCount(this.state.nodeCount);
-  }
+
   handleToggleNumbers = (e) => {
     e.preventDefault();
     this.props.toggleNumbers();
+  }
+  handleAddNode = () => {
+    this.props.addNode(this.state.nodeValueInsert);
+  }
+  handleAddRandomNode = () => {
+    this.props.addRandomNode();
+  }
+  handleRemoveNode = () => {
+    this.props.removeNode(this.state.nodeValueRemove);
+  }
+  handleGenerateTree = () => {
+    this.props.generateTree(this.state.numberOfNodes);
+  }
+  handleResetTree = () => {
+    this.props.resetTree();
   }
 
   render(){
     return(
       <div className="form">
-        <h2>Number of Nodes: {this.props.state.nodeCount}</h2>
-        <label>Number of Nodes:</label>
-        <input
-          onChange={this.handleChange}></input>
-        <button
-          onClick={this.handleSubmit}
-          >Generate new graph</button>
-        <button
-          onClick={this.handleToggleNumbers}
-          >Toggle Numbers</button>
+        <h2>Control panel:</h2>
+
+        <div>
+          <div>Generate random tree</div>
+          <label>Number of nodes:</label>
+          <input
+            name="numberOfNodes"
+            onChange={this.handleChange}
+            ></input>
+          <button
+            onClick={this.handleGenerateTree}
+            >Generate</button>
+          <button
+            onClick={this.handleResetTree}
+            >Reset</button>
+        </div>
+
+        <div>
+          <div>Add a node</div>
+          <label>Value:</label>
+          <input
+            name="nodeValueInsert"
+            onChange={this.handleChange}></input>
+          <button
+            onClick={this.handleAddNode}
+            >Add Node</button>
+          <button
+            onClick={this.handleAddRandomNode}
+            >Add Random Node</button>
+        </div>
+
+        <div>
+          <div>Remove a node</div>
+          <label>Value:</label>
+          <input
+            name="nodeValueRemove"
+            onChange={this.handleChange}></input>
+          <button
+            onClick={this.handleRemoveNode}
+            >Remove Node</button>
+        </div>
+
       </div>
     )
   }

@@ -12,102 +12,158 @@ const mapStateToProps = (state) => {
 
 class Graph extends React.Component {
 
-  componentDidMount() {
-    this.drawChart();
+  CIRCLE_RADIUS = 20;
+  EDGE_THICKNESS = 3;
+  NOMINAL_VERTICAL_SEPARATION = 75;
+  margin = {top: 0, right: 0, bottom: 0, left: 0};
+  width = 960 - this.margin.right - this.margin.left;
+  height = 750 - this.margin.top - this.margin.bottom;
+  diagonal = null;
+  svg = null;
+  tree = null;
+  root = null;
+  i = 0;
+
+  updateGraph = () => {
+    this.removeExistingGraph();
+
+    this.defineRoot();
+    this.defineTree();
+    this.defineDiagonal();
+    this.defineSVG();
+    this.setVerticalSpacing();
+    
+    this.declareNodes();
+    this.enterNodes();
+    this.declareLinks();
+    this.enterLinks();
   }
 
-  drawChart() {
-
-    let data = this.props.data;
-    let displayNumbers = this.props.displayNumbers;
-    // remove existing chart
-    let chartExists = d3.selectAll("svg")._groups[0].length;
-    if(chartExists){
+  removeExistingGraph = () => {
+    if(this.graphExists()){
       d3.select("svg").remove();
     }
+  }
+  
+  graphExists = () => {
+    return d3.selectAll("svg")._groups[0].length;
+  }
 
-    // ************** Generate the tree diagram	 *****************
-    let margin = {top: 40, right: 120, bottom: 20, left: 120};
-    let width = 960 - margin.right - margin.left;
-    let height = 750 - margin.top - margin.bottom;
-    
-    let i = 0;
+  defineRoot = () => {
+    const { data } = this.props;
+    this.root = d3.hierarchy(data);
+  }
 
-    let root = d3.hierarchy(data);
-    let tree = d3.tree()
-      .size([height, width]);
+  defineTree = () => {
+    this.tree = d3.tree()
+      .size([this.height, this.width]);
 
-    tree = tree(root);
+    this.tree = this.tree(this.root);
+  }
 
-    var diagonal = d3.linkVertical()
-      .x(function(d) { return d.x; })
-      .y(function(d) { return d.y; });
+  defineDiagonal = () => {
+    this.diagonal = d3.linkVertical()
+      .x(d => d.x)
+      .y(d => d.y);
+  }
 
-    let svg = d3.select("body").append("svg")
-      .attr("width", width + margin.right + margin.left)
-      .attr("height", height + margin.top + margin.bottom)
+  defineSVG = () => {
+    this.svg = d3.select("body").append("svg")
+      .attr("width", this.width + this.margin.right + this.margin.left)
+      .attr("height", this.height + this.margin.top + this.margin.bottom)
       .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
 
-    let nodes = tree.descendants();
-    let links = tree.links();
+  }
 
-    // Normalize for fixed-depth.
-    nodes.forEach(function(d) { d.y = d.depth * 75; });
+  setVerticalSpacing = () => {
+    this.getNodes().forEach( this.calcNodeHeight );
+  }
 
-    // Declare the nodes…
-    let node = svg.selectAll("g.node")
-      .data(nodes, function(d) { return d.id || (d.id = ++i); });
+  calcNodeHeight = (node) => {
+    let centerToCenter = 0;
 
-    // Enter the nodes.
-    let nodeEnter = node.enter().append("g")
-      .attr("class", function(d) {
-        if(isNaN(d.value)){
-          return "node hide";
-        } else {
-          return "node";
-        }
-      })
-      .attr("transform", function(d) { 
-        return "translate(" + d.x + "," + d.y + ")"; })
+    let circleHeight = (this.CIRCLE_RADIUS + this.EDGE_THICKNESS) * 2;
 
+    if (this.tree.height * this.NOMINAL_VERTICAL_SEPARATION + circleHeight /2 > this.height){
+      let circleHeight = (this.CIRCLE_RADIUS + this.EDGE_THICKNESS) * 3;
+      let offsetPerLevel = (circleHeight + this.margin.top) / this.tree.height;
+      centerToCenter = this.NOMINAL_VERTICAL_SEPARATION - offsetPerLevel;
+    } else {
+      centerToCenter = this.NOMINAL_VERTICAL_SEPARATION;
+    }
+
+    node.y = this.CIRCLE_RADIUS + this.EDGE_THICKNESS + node.depth * centerToCenter;
+  }
+
+  getLinks = () => {
+    return this.tree.links();
+  }
+
+  getNodes = () => {
+    return this.tree.descendants();
+  }
+  
+  declareNodes = () => {
+    this.node = this.svg.selectAll("g.node")
+      .data(this.getNodes(), d => {
+        return d.id || (d.id = ++this.i);
+      });
+  }
+  
+  enterNodes = () => {
+    const { displayNumbers } = this.props;
+  
+    let nodeEnter = this.node.enter().append("g")
+    .attr("class", getNodeClass)
+    .attr("transform", d => { 
+      return "translate(" + d.x + "," + d.y + ")"; })
+  
     nodeEnter.append("circle")
-      .attr("r", 20)
+      .attr("r", this.CIRCLE_RADIUS)
       .style("fill", "#fff");
-
+  
     nodeEnter.append("text")
-      // .attr("y", function(d) { 
-        // return d.children || d._children ? -22 : 22; })
       .attr("dy", ".35em")
       .attr("text-anchor", "middle")
-      .text(function(d) {
-        console.log(`displayNumbers: `, displayNumbers);
-        // console.log(`this.props 🕧`, this.props)
+      .text( d => {
         if(displayNumbers){
           return d.data.value
         }
       })
       .style("fill-opacity", 1);
-
-    // Declare the links…
-    let link = svg.selectAll("path.link")
-      .data(links, function(d) { return d.target.id; });
-
-    // Enter the links.
-    link.enter().insert("path", "g")
-      .attr("class", function(d){
-        if(isNaN(d.target.value)){
-          return "link hide";
-        } else {
-          return "link";
-        }
-      })
-      .attr("d", diagonal);
+  }
+  
+  declareLinks = () => {
+    this.link = this.svg.selectAll("path.link")
+      .data(this.getLinks(), d => d.target.id );
+  }
+  
+  enterLinks = () => {
+    this.link.enter().insert("path", "g")
+    .attr("class", getLinkClass)
+    .attr("d", this.diagonal);
   }
 
   render() {
-    this.drawChart();
+    this.updateGraph();
     return null;
+  }
+}
+
+const getNodeClass = (node) => {
+  if(isNaN(node.value)){
+    return "node hide";
+  } else {
+    return "node";
+  }
+}
+
+const getLinkClass = (link) => {
+  if(isNaN(link.target.value)){
+    return "link hide";
+  } else {
+    return "link";
   }
 }
 
