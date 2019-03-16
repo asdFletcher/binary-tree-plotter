@@ -63,6 +63,26 @@ class Logic extends React.Component {
     return num;
   }
 
+  findParentValue = (value) => {
+    let num = this.tree.findParentValue(value);
+    // return num;
+  }
+
+  findMaxValue = () => {
+    let num = this.tree.findMaxValue();
+    return num;
+  }
+  
+  findMinValue = () => {
+    let num = this.tree.findMinValue();
+    return num;
+  }
+
+  contains = (value) => {
+    let result = this.tree.contains(value);
+    return result;
+  }
+
   render(){
     return (
       <>
@@ -72,6 +92,10 @@ class Logic extends React.Component {
           generateTree={this.handleGenerateTree}
           resetTree={() => this.handleGenerateTree(0)}
           removeNode={this.removeNode}
+          findParentValue={this.findParentValue}
+          findMaxValue={this.findMaxValue}
+          findMinValue={this.findMinValue}
+          contains={this.contains}
         />
         <Graph />
       </>
