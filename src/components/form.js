@@ -35,6 +35,9 @@ class Form extends React.Component{
   handleRemoveNode = () => {
     this.props.removeNode(this.state.nodeValueRemove);
   }
+  handleRemoveRoot = () => {
+    this.props.removeRoot();
+  }
   handleGenerateTree = () => {
     this.props.generateTree(this.state.numberOfNodes);
   }
@@ -104,6 +107,9 @@ class Form extends React.Component{
           <button
             onClick={this.handleRemoveNode}
             >Remove Node</button>
+          <button
+            onClick={this.handleRemoveRoot}
+            >Remove Root</button>
         </section>
 
         <section>

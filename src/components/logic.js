@@ -45,10 +45,11 @@ class Logic extends React.Component {
   }
 
   removeNode = (value) => {
-    console.log(`in it `, value);
-    console.log(`tree before: `, this.tree);
     this.tree.remove(value);
-    console.log(`tree after: `, this.tree);
+    this.copyAndUpdateD3Data();
+  }
+  removeRoot = (value) => {
+    this.tree.remove(this.tree.root.value);
     this.copyAndUpdateD3Data();
   }
 
@@ -96,6 +97,7 @@ class Logic extends React.Component {
           findMaxValue={this.findMaxValue}
           findMinValue={this.findMinValue}
           contains={this.contains}
+          removeRoot={this.removeRoot}
         />
         <Graph />
       </>
