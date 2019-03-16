@@ -35,6 +35,9 @@ class Form extends React.Component{
   handleRemoveNode = () => {
     this.props.removeNode(this.state.nodeValueRemove);
   }
+  handleRemoveRoot = () => {
+    this.props.removeRoot();
+  }
   handleGenerateTree = () => {
     this.props.generateTree(this.state.numberOfNodes);
   }
@@ -42,7 +45,8 @@ class Form extends React.Component{
     this.props.resetTree();
   }
   handleFindParentValue = () => {
-    this.props.findParentValue(this.state.findParentOfValue);
+    let num = this.props.findParentValue(this.state.findParentOfValue);
+    this.setState({parentValue: num});
   }
   handleFindMaxValue = () => {
     this.setState({maxValue: this.props.findMaxValue()});
@@ -65,7 +69,7 @@ class Form extends React.Component{
       <div className="form">
         <h2>Control panel:</h2>
 
-        <div>
+        <section>
           <div>Generate random tree</div>
           <label>Number of nodes:</label>
           <input
@@ -78,9 +82,9 @@ class Form extends React.Component{
           <button
             onClick={this.handleResetTree}
             >Reset</button>
-        </div>
+        </section>
 
-        <div>
+        <section>
           <div>Add a node</div>
           <label>Value:</label>
           <input
@@ -92,9 +96,9 @@ class Form extends React.Component{
           <button
             onClick={this.handleAddRandomNode}
             >Add Random Node</button>
-        </div>
+        </section>
 
-        <div>
+        <section>
           <div>Remove a node</div>
           <label>Value:</label>
           <input
@@ -103,9 +107,12 @@ class Form extends React.Component{
           <button
             onClick={this.handleRemoveNode}
             >Remove Node</button>
-        </div>
+          <button
+            onClick={this.handleRemoveRoot}
+            >Remove Root</button>
+        </section>
 
-        <div>
+        <section>
           <div>Find the parent value</div>
           <label>Value:</label>
           <input
@@ -114,23 +121,24 @@ class Form extends React.Component{
           <button
             onClick={this.handleFindParentValue}
             >Find parent value</button>
-        </div>
+            <div>Parent value: {this.state.parentValue}</div>
+        </section>
 
-        <div>
+        <section>
           <button
             onClick={this.handleFindMaxValue}
             >Find max value</button>
             <div>Max: {this.state.maxValue}</div>
-        </div>
+        </section>
 
-        <div>
+        <section>
           <button
             onClick={this.handleFindMinValue}
             >Find min value</button>
             <div>Min: {this.state.minValue}</div>
-        </div>
+        </section>
 
-        <div>
+        <section>
           <div>Contains:</div>
           <label>Value:</label>
           <input
@@ -140,7 +148,7 @@ class Form extends React.Component{
             onClick={this.handleContains}
             >check</button>
             <div>Contains? {this.state.contains}</div>
-        </div>
+        </section>
       </div>
     )
   }

@@ -6,108 +6,117 @@ class BinarySearchTree {
     this.root = null;
   }
 
-  isNumericInput(value){
-    let numericalValue = parseInt(value);
-    if ( typeof numericalValue === 'number' ) { return true; }
-    return false;
-  }
-
   insert(value){
 
-    if(!this.isNumericInput(value)) { return; }
+    if (!this.isNumericInput(value)) { return; }
     value = parseInt(value);
 
     let newNode = new Node(value);
     
-    if(this.treeIsEmpty()) { 
+    if (this.treeIsEmpty()) { 
       this.root = newNode;
-      return;
+      return newNode;
     }
 
     function _go(node){
-      if(newNode.value > node.value){
-        if(node.right) {
-          _go(node.right);
-        } else {
-          node.right = newNode;
-        }
+      if (node.value === value) { return; } // already in tree
+
+      if (!node.left && value < node.value ) {
+        node.left = newNode;
+        return newNode;
       }
-      if(newNode.value < node.value){
-        if(node.left) {
-          _go(node.left);
-        } else {
-          node.left = newNode;
-        }
+      if (!node.right && value > node.value ) {
+        node.right = newNode;
+        return newNode;
       }
+      
+      if (value > node.value) {
+        return _go(node.right);
+      }
+
+      return _go(node.left);
     }
-    _go(this.root);
+
+    return _go(this.root);
   }
 
   remove(value){
 
+    // check for empty tree
     if(this.treeIsEmpty()) { return; }
-
+    
+    // check that the number is numeric
     if(!this.isNumericInput(value)) { return; }
     value = parseInt(value);
 
-    //case: root is value, and 1 node tree
-    if(this.root.value === value){
-      if(!this.root.left && !this.root.right){
-        this.root = null;
-      }
+    let parentNode = this.findParent(value);
+    let deletedNode;
+
+    if(!parentNode) { return; }
+
+    if( value < parentNode.value ) {
+      deletedNode = parentNode.left;
+      parentNode.left = this._removeRootFromTree(parentNode.left);
+    } else {
+      deletedNode = parentNode.right;
+      parentNode.right = this._removeRootFromTree(parentNode.right);
+    }
+    return deletedNode;    
+  }
+
+  _removeRootFromTree(node){
+
+    if (!node.left && !node.right) { return null; }
+    if (!node.left) { return node.right; } 
+    if (!node.right) { return node.left; }
+    
+    const replacementDirection = this._pickASide();
+    let newRoot = node[replacementDirection];
+
+    if (replacementDirection === "left"){
+      const maxNodeOfLeftTree = this.findMaxNode(node.left);
+      maxNodeOfLeftTree.right = node.right;
+    }
+    
+    if (replacementDirection === "right"){
+      const minNodeOfRightTree = this.findMinNode(node.right);
+      minNodeOfRightTree.left = node.left;
+    }
+    
+    return newRoot;
+  }
+
+  findMax(){
+    let node = this.findMaxNode(this.root);
+    return node && node.value;
+  }
+  
+  findMin(){
+    let node = this.findMinNode(this.root);
+    return node && node.value;
+  }
+
+  contains(value){
+    if (this.treeIsEmpty()) { return false; }
+    if (!this.isNumericInput(value)) { return false; }
+
+    value = parseInt(value);
+
+    function _go(node){
+      if (!node) { return false; }
+      if (node.value === value) { return true; }
+      if (value > node.value) { return _go(node.right); }
+      
+      return _go(node.left);
     }
 
-    let parent = this._findParent(value)
+    return _go(this.root);
+  }
 
-    console.log(`parent found: `, parent);
-
-    if(!parent) { return; }
-
-    let target;
-    let targetDirection;
-    if( parent.left && parent.left.value === value ) {
-      target = parent.left;
-      targetDirection = "left";
-    }
-    if( parent.right && parent.right.value === value ) {
-      target = parent.right;
-      targetDirection = "right";
-    }
-
-    console.log(`targetDirection: `, targetDirection);
-    console.log(`target: `, target);
-
-    if( this._hasNoChildren(target) ) {
-      parent[targetDirection] = null;
-      return;
-    }
-
-    if( this._hasTwoChildren(target) ) {
-
-      let replacementDirection = this._pickASide();
-      let replacementNode = target[replacementDirection];
-
-      let attachNode;
-      if(replacementDirection === "left"){
-        // find max of left
-        attachNode = this.findMaxSubTree(target.left);
-        // take wohle right and attach to .right
-        attachNode.right = target.right;
-      }
-      if(replacementDirection === "right"){
-        // find min of right
-        attachNode = this.findMinSubTree(target.right);
-        // take wohle left and attach to .left
-        attachNode.left = target.left;
-      }
-
-      console.log(`replacementNode: ` , replacementNode);
-
-      parent[targetDirection] = target[replacementDirection];
-
-      return;
-    }
-
+  isNumericInput(value){
+    let numericalValue = parseInt(value);
+    if ( typeof numericalValue === 'number' ) { return true; }
+    return false;
   }
 
   _pickASide(node){
@@ -119,127 +128,46 @@ class BinarySearchTree {
     }
   }
 
-  _hasNoChildren(node){
-    if(!node.left && !node.right) { return true; }
-  }
-
-  _hasTwoChildren(node){
-    if(node.left && node.right) { return true; }
-  }
-
-  _findParent(value){
-
-    if(this.treeIsEmpty()) { return undefined; }
-
-    let found = undefined;
+  findParent(value){
     function _go(node){
-      if(node.right) {
-        if(node.right.value === value){
-          found = node;
-          return;
-        } else {
-          _go(node.right);
-        }
+      
+      if (!node) { return undefined; }
+
+      if (node.left && node.left.value === value){ return node; }
+      if (node.right && node.right.value === value){ return node; }
+      
+      if (value > node.value){
+        return _go(node.right);
       }
-      if(found){ return found; }
-
-      if(node.left) {
-        if(node.left.value === value){
-          found = node;
-          return;
-        } else {
-          _go(node.left);
-        }
-      }
+      
+      return _go(node.left);
     }
-    _go(this.root)
-    return found;
+
+    return _go(this.root);
   }
 
-  findMaxValue(){
-    let node = this.findMax();
-    return node.value;
-  }
-  findMinValue(){
-    let node = this.findMin();
-    return node.value;
-  }
-
-  findMaxSubTree(node){
-    if(this.treeIsEmpty()) { return undefined; }
-
+  findMaxNode(node){
+    if (!node) { return undefined; }
+    
     let current = node;
-    while(current.right){
-      current = current.right;
-    }
 
-    return current;
-  }
-  findMinSubTree(node){
-    if(this.treeIsEmpty()) { return undefined; }
-
-    let current = node;
-    while(current.left){
-      current = current.left;
-    }
-
-    return current;
-  }
-
-  findMax(){
-    if(this.treeIsEmpty()) { return undefined; }
-
-    let current = this.root;
-    while(current.right){
+    while (current.right){
       current = current.right;
     }
 
     return current;
   }
 
-  findMin(){
-    if(this.treeIsEmpty()) { return undefined; }
+  findMinNode(node){
+    if (!node) { return undefined; }
+    
+    let current = node;
 
-    let current = this.root;
-    while(current.left){
+    while (current.left){
       current = current.left;
     }
 
     return current;
-  }
-
-  findParentValue(value){
-    if(!this.isNumericInput(value)) { return; }
-    value = parseInt(value);
-
-    let parentNode = this._findParent(value);
-    if(parentNode){
-      return parentNode.value;
-    }
-    return undefined;
-  }
-
-  contains(value){
-    if(this.treeIsEmpty()) { return undefined; }
-
-    if(!this.isNumericInput(value)) { return; }
-    value = parseInt(value);
-
-    let found = false;
-    function _go(node){
-      if(node.value === value){ found = true}
-      if(node.right){
-        _go(node.right);
-      }
-      if(found){ return }
-      if(node.left){
-        _go(node.left);
-      }
-    }
-
-    _go(this.root);
-
-    return found;
   }
 
   treeIsEmpty(){
