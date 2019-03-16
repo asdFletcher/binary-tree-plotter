@@ -8,33 +8,36 @@ class BinarySearchTree {
 
   insert(value){
 
-    if(!this.isNumericInput(value)) { return; }
+    if (!this.isNumericInput(value)) { return; }
     value = parseInt(value);
 
     let newNode = new Node(value);
     
-    if(this.treeIsEmpty()) { 
+    if (this.treeIsEmpty()) { 
       this.root = newNode;
-      return;
+      return newNode;
     }
 
     function _go(node){
-      if(newNode.value > node.value){
-        if(node.right) {
-          _go(node.right);
-        } else {
-          node.right = newNode;
-        }
+      if (node.value === value) { return; } // already in tree
+
+      if (!node.left && value < node.value ) {
+        node.left = newNode;
+        return newNode;
       }
-      if(newNode.value < node.value){
-        if(node.left) {
-          _go(node.left);
-        } else {
-          node.left = newNode;
-        }
+      if (!node.right && value > node.value ) {
+        node.right = newNode;
+        return newNode;
       }
+      
+      if (value > node.value) {
+        return _go(node.right);
+      }
+
+      return _go(node.left);
     }
-    _go(this.root);
+
+    return _go(this.root);
   }
 
   remove(value){
