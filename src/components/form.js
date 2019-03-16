@@ -44,11 +44,11 @@ class Form extends React.Component{
   handleFindParentValue = () => {
     this.props.findParentValue(this.state.findParentOfValue);
   }
-  handleFindMax = () => {
-    this.setState({maxValue: this.props.findMax()});
+  handleFindMaxValue = () => {
+    this.setState({maxValue: this.props.findMaxValue()});
   }
-  handleFindMin = () => {
-    this.setState({minValue: this.props.findMin()});
+  handleFindMinValue = () => {
+    this.setState({minValue: this.props.findMinValue()});
   }
   handleContains = () => {
     let contains = this.props.contains(this.state.containsValue)
@@ -118,14 +118,14 @@ class Form extends React.Component{
 
         <div>
           <button
-            onClick={this.handleFindMax}
+            onClick={this.handleFindMaxValue}
             >Find max value</button>
             <div>Max: {this.state.maxValue}</div>
         </div>
 
         <div>
           <button
-            onClick={this.handleFindMin}
+            onClick={this.handleFindMinValue}
             >Find min value</button>
             <div>Min: {this.state.minValue}</div>
         </div>
