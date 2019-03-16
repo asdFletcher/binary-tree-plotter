@@ -65,7 +65,7 @@ class Logic extends React.Component {
 
   findParentValue = (value) => {
     let num = this.tree.findParentValue(value);
-    // return num;
+    return num;
   }
 
   findMaxValue = () => {

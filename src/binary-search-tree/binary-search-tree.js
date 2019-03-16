@@ -50,6 +50,11 @@ class BinarySearchTree {
     if(!this.isNumericInput(value)) { return; }
     value = parseInt(value);
 
+    //case: root is value, and multi node tree
+
+      // 1 node
+      // 2 nodes
+
     //case: root is value, and 1 node tree
     if(this.root.value === value){
       if(!this.root.left && !this.root.right){
@@ -85,27 +90,34 @@ class BinarySearchTree {
     if( this._hasTwoChildren(target) ) {
 
       let replacementDirection = this._pickASide();
-      let replacementNode = target[replacementDirection];
 
       let attachNode;
       if(replacementDirection === "left"){
-        // find max of left
-        attachNode = this.findMaxSubTree(target.left);
-        // take wohle right and attach to .right
+        attachNode = this._findMaxSubTree(target.left);
         attachNode.right = target.right;
       }
       if(replacementDirection === "right"){
-        // find min of right
-        attachNode = this.findMinSubTree(target.right);
-        // take wohle left and attach to .left
+        attachNode = this._findMinSubTree(target.right);
         attachNode.left = target.left;
       }
-
-      console.log(`replacementNode: ` , replacementNode);
 
       parent[targetDirection] = target[replacementDirection];
 
       return;
+    }
+
+    if( this._hasOneChild(target) ) {
+
+      let replacementDirection;
+
+      if(target.left){
+        replacementDirection = "left";
+      } else {
+        replacementDirection = "right";
+      }
+      
+      parent[targetDirection] = target[replacementDirection];
+
     }
 
   }
@@ -121,6 +133,12 @@ class BinarySearchTree {
 
   _hasNoChildren(node){
     if(!node.left && !node.right) { return true; }
+  }
+
+  _hasOneChild(node){
+    if(node.left && !node.right) { return true; }
+    if(!node.left && node.right) { return true; }
+    return false;
   }
 
   _hasTwoChildren(node){
@@ -158,38 +176,25 @@ class BinarySearchTree {
 
   findMaxValue(){
     let node = this.findMax();
-    return node.value;
+    return node && node.value;
   }
   findMinValue(){
     let node = this.findMin();
-    return node.value;
-  }
-
-  findMaxSubTree(node){
-    if(this.treeIsEmpty()) { return undefined; }
-
-    let current = node;
-    while(current.right){
-      current = current.right;
-    }
-
-    return current;
-  }
-  findMinSubTree(node){
-    if(this.treeIsEmpty()) { return undefined; }
-
-    let current = node;
-    while(current.left){
-      current = current.left;
-    }
-
-    return current;
+    return node && node.value;
   }
 
   findMax(){
+    return this._findMaxSubTree(this.root)
+  }
+
+  findMin(){
+    return this._findMinSubTree(this.root)
+  }
+
+  _findMaxSubTree(node){
     if(this.treeIsEmpty()) { return undefined; }
 
-    let current = this.root;
+    let current = node;
     while(current.right){
       current = current.right;
     }
@@ -197,10 +202,10 @@ class BinarySearchTree {
     return current;
   }
 
-  findMin(){
+  _findMinSubTree(node){
     if(this.treeIsEmpty()) { return undefined; }
 
-    let current = this.root;
+    let current = node;
     while(current.left){
       current = current.left;
     }
