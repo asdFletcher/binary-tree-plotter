@@ -14,15 +14,7 @@ const store = (state = initialState, action) => {
       }
       return newState;
     }
-    // case "UPDATE_NODE_COUNT": {
-    //   const newState = {
-    //     ...state,
-    //     nodeCount: payload,
-    //   }
-    //   return newState;
-    // }
     case "TOGGLE_NUMBERS": {
-
       const newState = {
         ...state,
       }

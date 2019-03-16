@@ -84,6 +84,21 @@ class Logic extends React.Component {
     return result;
   }
 
+  printPreOrder = () => {
+    let result = this.tree.printPreOrder();
+    return result;
+  }
+  printInOrder = () => {
+    console.log(`in logic `);
+
+    let result = this.tree.printInOrder();
+    return result;
+  }
+  printPostOrder = () => {
+    let result = this.tree.printPostOrder();
+    return result;
+  }
+
   render(){
     return (
       <>
@@ -98,6 +113,9 @@ class Logic extends React.Component {
           findMinValue={this.findMinValue}
           contains={this.contains}
           removeRoot={this.removeRoot}
+          printPreOrder={this.printPreOrder}
+          printInOrder={this.printInOrder}
+          printPostOrder={this.printPostOrder}
         />
         <Graph />
       </>

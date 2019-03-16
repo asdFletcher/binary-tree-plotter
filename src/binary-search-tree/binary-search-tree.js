@@ -42,10 +42,8 @@ class BinarySearchTree {
 
   remove(value){
 
-    // check for empty tree
     if(this.treeIsEmpty()) { return; }
     
-    // check that the number is numeric
     if(!this.isNumericInput(value)) { return; }
     value = parseInt(value);
 
@@ -176,6 +174,47 @@ class BinarySearchTree {
     return false;
   }
 
+  printPreOrder(){
+    const result = [];
+
+    function _go(node){
+      if(!node) { return; }
+      result.push(node.value);
+      _go(node.left);
+      _go(node.right);
+    }
+
+    _go(this.root);
+    return result;
+  }
+  printInOrder(){
+    console.log(`in method `);
+
+    const result = [];
+
+    function _go(node){
+      if(!node) { return; }
+      _go(node.left);
+      result.push(node.value);
+      _go(node.right);
+    }
+
+    _go(this.root);
+    return result;
+  }
+  printPostOrder(){
+    const result = [];
+
+    function _go(node){
+      if(!node) { return; }
+      _go(node.left);
+      _go(node.right);
+      result.push(node.value);
+    }
+
+    _go(this.root);
+    return result;
+  }
   // print (in order, pre order, post order)
 }
 

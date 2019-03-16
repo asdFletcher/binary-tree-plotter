@@ -62,6 +62,22 @@ class Form extends React.Component{
       this.setState({contains: "false"});
     }
   }
+  handlePrintPreOrder = () => {
+    let res = this.props.printPreOrder();
+    res = res.toString();
+    this.setState({printPreOrderString: res});
+  }
+  handlePrintInOrder = () => {
+    let res = this.props.printInOrder();
+    res = res.toString();
+    console.log(`res in `, res);
+    this.setState({printInOrderString: res});
+  }
+  handlePrintPostOrder = () => {
+    let res = this.props.printPostOrder();
+    res = res.toString();
+    this.setState({printPostOrderString: res});
+  }
   
 
   render(){
@@ -148,6 +164,22 @@ class Form extends React.Component{
             onClick={this.handleContains}
             >check</button>
             <div>Contains? {this.state.contains}</div>
+        </section>
+
+        <section>
+          <div>Print:</div>
+          <button
+            onClick={this.handlePrintPreOrder}
+            >Pre order</button>
+            <div>Pre order: {this.state.printPreOrderString}</div>
+          <button
+            onClick={this.handlePrintInOrder}
+            >In order</button>
+            <div>In order: {this.state.printInOrderString}</div>
+          <button
+            onClick={this.handlePrintPostOrder}
+            >Post order</button>
+            <div>Post order: {this.state.printPostOrderString}</div>
         </section>
       </div>
     )
