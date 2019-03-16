@@ -19,8 +19,11 @@ class BinarySearchTree {
 
     let newNode = new Node(value);
     
-    if(!this.root){ this.root = newNode; }
-    
+    if(this.treeIsEmpty()) { 
+      this.root = newNode;
+      return;
+    }
+
     function _go(node){
       if(newNode.value > node.value){
         if(node.right) {
@@ -41,10 +44,13 @@ class BinarySearchTree {
   }
 
   remove(value){
+
+    if(this.treeIsEmpty()) { return undefined; }
+
     if(!this.isNumericInput(value)) { return; }
     value = parseInt(value);
 
-    if(this.root && this.root.value === value){
+    if(this.root.value === value){
       if(!this.root.left && !this.root.right){
         this.root = null;
       }
@@ -76,9 +82,97 @@ class BinarySearchTree {
 
   }
 
-  // contains
-  // find max
-  // find min
+  _findParent(value){
+
+    if(this.treeIsEmpty()) { return undefined; }
+
+    let found = undefined;
+    function _go(node){
+      if(node.right) {
+        if(node.right.value === value){
+          found = node;
+          return;
+        } else {
+          _go(node.right);
+        }
+      }
+      if(found){ return found; }
+
+      if(node.left) {
+        if(node.left.value === value){
+          found = node;
+          return;
+        } else {
+          _go(node.left);
+        }
+      }
+    }
+    _go(this.root)
+    return found;
+  }
+
+  findMax(){
+    if(this.treeIsEmpty()) { return undefined; }
+
+    let current = this.root;
+    while(current.right){
+      current = current.right;
+    }
+
+    return current.value;
+  }
+
+  findMin(){
+    if(this.treeIsEmpty()) { return undefined; }
+
+    let current = this.root;
+    while(current.left){
+      current = current.left;
+    }
+
+    return current.value;
+  }
+
+  findParentValue(value){
+    if(!this.isNumericInput(value)) { return; }
+    value = parseInt(value);
+
+    let parentNode = this._findParent(value);
+    if(parentNode){
+      return parentNode.value;
+    }
+    return undefined;
+  }
+
+  contains(value){
+    if(this.treeIsEmpty()) { return undefined; }
+
+    if(!this.isNumericInput(value)) { return; }
+    value = parseInt(value);
+
+    let found = false;
+    function _go(node){
+      if(node.value === value){ found = true}
+      if(node.right){
+        _go(node.right);
+      }
+      if(found){ return }
+      if(node.left){
+        _go(node.left);
+      }
+    }
+
+    _go(this.root);
+
+    return found;
+  }
+
+  treeIsEmpty(){
+    if(!this.root) { return true; }
+
+    return false;
+  }
+
   // print (in order, pre order, post order)
 }
 
