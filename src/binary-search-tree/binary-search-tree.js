@@ -215,7 +215,6 @@ class BinarySearchTree {
     _go(this.root);
     return result;
   }
-  // print (in order, pre order, post order)
 }
 
 export default BinarySearchTree;

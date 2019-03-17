@@ -70,7 +70,6 @@ class Form extends React.Component{
   handlePrintInOrder = () => {
     let res = this.props.printInOrder();
     res = res.toString();
-    console.log(`res in `, res);
     this.setState({printInOrderString: res});
   }
   handlePrintPostOrder = () => {

@@ -1,8 +1,10 @@
 import React from 'react';
 import Form from "./form.js";
 import Graph from "./graph.js";
+
 import BinarySearchTree from "../binary-search-tree/binary-search-tree.js";
-import Node from "../binary-search-tree/binary-search-tree-node.js";
+import AVLTree from "../avl-tree/avl-tree.js";
+
 import { connect } from 'react-redux';
 import * as actions from '../store/actions.js';
 
@@ -21,7 +23,8 @@ class Logic extends React.Component {
 
   constructor(props){
     super(props);
-    this.tree = new BinarySearchTree();
+    // this.tree = new BinarySearchTree();
+    this.tree = new AVLTree();
   }
   
   async componentDidMount(){
@@ -89,8 +92,6 @@ class Logic extends React.Component {
     return result;
   }
   printInOrder = () => {
-    console.log(`in logic `);
-
     let result = this.tree.printInOrder();
     return result;
   }
@@ -124,7 +125,7 @@ class Logic extends React.Component {
 }
 
 const generateTree = (numberOfNodes) => {
-  let tree = new BinarySearchTree();
+  let tree = new AVLTree();
 
   let values = generateUniqueNumbers(numberOfNodes)
 
