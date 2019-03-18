@@ -121,7 +121,7 @@ class Graph extends React.Component {
   
     nodeEnter.append("circle")
       .attr("r", this.CIRCLE_RADIUS)
-      .style("fill", "#fff");
+      .style("fill", "#fff")
   
     nodeEnter.append("text")
       .attr("dy", ".35em")
@@ -135,18 +135,25 @@ class Graph extends React.Component {
     
     nodeEnter.append("text")
       .attr("dy", ".35em")
-      .attr("x", d => 35 )
+      .attr("x", d => 45 )
       .text( d => {
-        return d.children && d.children[1] && d.children[1].height;
+        return d.data.height;
       })
       .style("fill-opacity", 1);
-    nodeEnter.append("text")
-      .attr("dy", ".35em")
-      .attr("x", d => -45 )
-      .text( d => {
-        return d.children && d.children[0] && d.children[0].height;
-      })
-      .style("fill-opacity", 1);
+
+    // nodeEnter.append("text")
+    //   .attr("dy", ".35em")
+    //   .attr("x", d => -45 )
+    //   .text( d => {
+    //     if (d.children && d.children[0]){
+    //       if (isNaN(d.children[0].value)){
+    //         return -1;
+    //       } else {
+    //         return d.children[0].height;
+    //       }
+    //     }
+    //   })
+    //   .style("fill-opacity", 1);
   }
   
   declareLinks = () => {
