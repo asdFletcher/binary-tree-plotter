@@ -188,8 +188,6 @@ class BinarySearchTree {
     return result;
   }
   printInOrder(){
-    console.log(`in method `);
-
     const result = [];
 
     function _go(node){
