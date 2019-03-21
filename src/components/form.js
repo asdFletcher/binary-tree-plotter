@@ -78,7 +78,6 @@ class Form extends React.Component{
     this.setState({printPostOrderString: res});
   }
   
-
   render(){
     return(
       <div className="form">
