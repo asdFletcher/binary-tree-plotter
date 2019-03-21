@@ -2,7 +2,7 @@ import React from 'react';
 import Form from "./form.js";
 import Graph from "./graph.js";
 
-import BinarySearchTree from "../binary-search-tree/binary-search-tree.js";
+// import BinarySearchTree from "../binary-search-tree/binary-search-tree.js";
 import AVLTree from "../avl-tree/avl-tree.js";
 
 import { connect } from 'react-redux';
@@ -27,7 +27,7 @@ class Logic extends React.Component {
     this.tree = new AVLTree();
   }
   
-  async componentDidMount(){
+  componentDidMount(){
     this.tree = generateTree(this.props.nodeCount);
     this.copyAndUpdateD3Data();
   }
@@ -48,6 +48,7 @@ class Logic extends React.Component {
   }
 
   removeNode = (value) => {
+    console.log(`this.tree: `, this.tree);
     this.tree.remove(value);
     this.copyAndUpdateD3Data();
   }
@@ -126,6 +127,7 @@ class Logic extends React.Component {
 
 const generateTree = (numberOfNodes) => {
   let tree = new AVLTree();
+  // let tree = new BinarySearchTree();
 
   let values = generateUniqueNumbers(numberOfNodes)
 
@@ -171,7 +173,6 @@ const copyTree = (tree) => {
       ...node,
       children: [left, right]
     }
-    // console.log(`test r: `, result);
     return result;
   }
 

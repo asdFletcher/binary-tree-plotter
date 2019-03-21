@@ -141,19 +141,6 @@ class Graph extends React.Component {
       })
       .style("fill-opacity", 1);
 
-    // nodeEnter.append("text")
-    //   .attr("dy", ".35em")
-    //   .attr("x", d => -45 )
-    //   .text( d => {
-    //     if (d.children && d.children[0]){
-    //       if (isNaN(d.children[0].value)){
-    //         return -1;
-    //       } else {
-    //         return d.children[0].height;
-    //       }
-    //     }
-    //   })
-    //   .style("fill-opacity", 1);
   }
   
   declareLinks = () => {

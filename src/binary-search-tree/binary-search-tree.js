@@ -4,9 +4,14 @@ class BinarySearchTree {
 
   constructor() {
     this.root = null;
+    this.insertComputations = 0;
+    this.removeComputations = 0;
   }
 
   insert(value){
+
+    // for timing
+    this.insertComputations = 0;
 
     if (!this.isNumericInput(value)) { return; }
     value = parseInt(value);
@@ -18,7 +23,9 @@ class BinarySearchTree {
       return newNode;
     }
 
-    function _go(node){
+    const _go = (node) => {
+      this.insertComputations++;
+
       if (node.value === value) { return; } // already in tree
 
       if (!node.left && value < node.value ) {
@@ -35,30 +42,40 @@ class BinarySearchTree {
       }
 
       return _go(node.left);
-    }
+    };
 
     return _go(this.root);
   }
 
   remove(value){
-
-    if(this.treeIsEmpty()) { return; }
     
-    if(!this.isNumericInput(value)) { return; }
+    // for timing
+    this.removeComputations = 0;
+
+    if (this.treeIsEmpty()) { return; }
+    
+    if (!this.isNumericInput(value)) { return; }
     value = parseInt(value);
+
+    // if root is removed
+    if(this.root.value === value){
+      let newRoot = this._removeRootFromTree(this.root);
+      this.root = newRoot;
+    }
 
     let parentNode = this.findParent(value);
     let deletedNode;
 
-    if(!parentNode) { return; }
+    if (!parentNode) { return; }
 
-    if( value < parentNode.value ) {
+    if ( value < parentNode.value ) {
       deletedNode = parentNode.left;
       parentNode.left = this._removeRootFromTree(parentNode.left);
     } else {
       deletedNode = parentNode.right;
       parentNode.right = this._removeRootFromTree(parentNode.right);
     }
+    console.log(`deleted node`, deletedNode);
     return deletedNode;    
   }
 
@@ -71,12 +88,12 @@ class BinarySearchTree {
     const replacementDirection = this._pickASide();
     let newRoot = node[replacementDirection];
 
-    if (replacementDirection === "left"){
+    if (replacementDirection === 'left'){
       const maxNodeOfLeftTree = this.findMaxNode(node.left);
       maxNodeOfLeftTree.right = node.right;
     }
     
-    if (replacementDirection === "right"){
+    if (replacementDirection === 'right'){
       const minNodeOfRightTree = this.findMinNode(node.right);
       minNodeOfRightTree.left = node.left;
     }
@@ -117,18 +134,18 @@ class BinarySearchTree {
     return false;
   }
 
-  _pickASide(node){
+  _pickASide(){
     let roll = Math.random();
     if (roll > 0.5){
-      return "left";
+      return 'left';
     } else {
-      return "right";
+      return 'right';
     }
   }
 
   findParent(value){
-    function _go(node){
-      
+    const _go = (node) => {
+      this.removeComputations++;
       if (!node) { return undefined; }
 
       if (node.left && node.left.value === value){ return node; }
@@ -139,7 +156,7 @@ class BinarySearchTree {
       }
       
       return _go(node.left);
-    }
+    };
 
     return _go(this.root);
   }
@@ -151,6 +168,7 @@ class BinarySearchTree {
 
     while (current.right){
       current = current.right;
+      this.removeComputations++;
     }
 
     return current;
@@ -163,13 +181,14 @@ class BinarySearchTree {
 
     while (current.left){
       current = current.left;
+      this.removeComputations++;
     }
 
     return current;
   }
 
   treeIsEmpty(){
-    if(!this.root) { return true; }
+    if (!this.root) { return true; }
 
     return false;
   }
@@ -178,7 +197,7 @@ class BinarySearchTree {
     const result = [];
 
     function _go(node){
-      if(!node) { return; }
+      if (!node) { return; }
       result.push(node.value);
       _go(node.left);
       _go(node.right);
@@ -191,7 +210,7 @@ class BinarySearchTree {
     const result = [];
 
     function _go(node){
-      if(!node) { return; }
+      if (!node) { return; }
       _go(node.left);
       result.push(node.value);
       _go(node.right);
@@ -204,7 +223,7 @@ class BinarySearchTree {
     const result = [];
 
     function _go(node){
-      if(!node) { return; }
+      if (!node) { return; }
       _go(node.left);
       _go(node.right);
       result.push(node.value);
