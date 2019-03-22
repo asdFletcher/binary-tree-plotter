@@ -73,11 +73,81 @@ class AVLTree {
       this.performRotations(imbalancedNode);
     }
 
-
-    // this.updateHeights();
     return result;
   }
 
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // vvvvvvvvvv delete vvvvvvvvv
+
+  delete(value){
+
+    if (!this.isNumericInput()){ return undefined; }
+    value = parseInt(value);
+
+    if (this.treeIsEmpty()){ return undefined; }
+
+    let imbalancedNode;
+
+    const _go = (node) => {
+      // if (value === node.value) { return undefined; } // value already in tree
+
+      // navigate to node that is targeted for deletion
+        // if leaf, remove
+        // on the way back up
+          // update heights
+          // check for height imbalances
+
+        // if only one child, make that child the new node
+
+        // if two children
+          // check height of L and R, find the max
+          // search the child with max height
+            // if left, find largest
+              // remove that node, replace it with any children (has to have 0 or 1)
+            // if right, find smallest
+              // remove that node, replace it with any children (has to have 0 or 1)
+          // on the way back up
+            // update heights
+            // check for height imbalances
+
+      let result;
+      // navigate right
+      if (value > node.value){
+        result = _go(node.right);
+      } else if (value < node.value){
+        // navigate left
+        result = _go(node.left);
+      }
+      
+      // done with recursion
+      
+      if(imbalancedNode){
+        let problemNodeDirection = this.getProblemNodeDirection(node, imbalancedNode);
+        this.performRotations(imbalancedNode, node, problemNodeDirection);
+      }
+      if(!imbalancedNode && this.isImbalanced(node)){
+        imbalancedNode = node;
+      }
+
+      this.updateNodeHeight(node);
+      return result;
+    };
+    
+    let result = _go(this.root);
+
+    // root imbalance
+    if(this.isImbalanced(this.root)){
+      this.performRotations(imbalancedNode);
+    }
+
+    return result;
+
+  }
+
+
+  // ^^^^^^^^^^ delete ^^^^^^^^^
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  
   getProblemNodeDirection(node, imbalancedNode){
     if(node.left && node.left.value === imbalancedNode.value){
       return 'left';

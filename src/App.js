@@ -11,8 +11,8 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        {/* <Logic /> */}
-        <Charter />
+        <Logic />
+        {/* <Charter /> */}
       </Provider>
     );
   }
