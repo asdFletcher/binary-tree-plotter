@@ -28,7 +28,12 @@ class Logic extends React.Component {
   }
   
   componentDidMount(){
-    this.tree = generateTree(this.props.nodeCount);
+    // this.tree = generateTree(this.props.nodeCount);
+    // let values = [71, 35, 87, 27, 61, 84, 96, 16, 30, 53, 70, 97, 8, 24, 28, 32, 39, 56];
+    // let values = [9, 5, 30, 3, 7, 20, 32, 2, 4, 6, 8, 10, 22, 34, 21];
+    let values = [9, 5, 30, 3, 7, 20, 32, 2, 4, 6, 8, 10, 22, 34];
+
+    this.tree = generateSpecificTree(values);
     this.copyAndUpdateD3Data();
   }
 
@@ -123,6 +128,16 @@ class Logic extends React.Component {
       </>
     );
   }
+}
+
+const generateSpecificTree = (values) => {
+  let tree = new AVLTree();
+
+  for(let i = 0; i < values.length; i++){
+    tree.insert(values[i])
+  }
+
+  return tree;
 }
 
 const generateTree = (numberOfNodes) => {
