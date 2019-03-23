@@ -1,6 +1,6 @@
 const initialState = {
   d3Data: {},
-  nodeCount: 2,
+  nodeCount: 5,
   displayNumbers: true,
 };
 
