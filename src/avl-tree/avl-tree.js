@@ -80,8 +80,6 @@ class AVLTree {
   // vvvvvvvvvv delete vvvvvvvvv
 
   remove(value){
-    // debugger
-
     if (!this.isNumericInput()){ return undefined; }
     value = parseInt(value);
 
@@ -91,9 +89,7 @@ class AVLTree {
 
     const _go = (node) => {
       console.log(`🥦node: `, node);
-      // debugger
 
-      // ~~~ go ~~~~
       let result;
       if (node.right && node.right.value === value){
         // located node to be deleted
@@ -155,8 +151,6 @@ class AVLTree {
       this.updateNodeHeight(node);
       console.log(`🍓done w delete: `, result);
       return result;
-
-      // ~~~ go ~~~~
     };
     
     let result = _go(this.root);
@@ -179,174 +173,9 @@ class AVLTree {
       return null;
     }
 
-    // if two children
+    // if two children --> Find sub tree min or max --> replace that node
     if (node.left && node.right){
-      // debugger
-      console.log(`it has 2 children`);
-      let maxNodeValueOfSubTree;
-      let minNodeValueOfSubTree;
-      let imbalancedNode;
-      
-      // ~~~~~~ 🐤🍊🍎🐤🍊🍎🐤🍊🍎🐤🍊🍎🐤🍊 ~~~~~~ 
-      // ~~~~~~ 🐤🍊🍎🐤🍊🍎🐤🍊🍎🐤🍊🍎🐤🍊 ~~~~~~ 
-      // ~~~~~~ 🐤🍊🍎🐤🍊🍎🐤🍊🍎🐤🍊🍎🐤🍊 ~~~~~~ 
-
-      const _goMin = (node) => {
-        console.log(`~~ goMin ~~ node: `, node);
-        // base case
-        if(!node.left){
-          minNodeValueOfSubTree = node.value;
-          console.log(`base case of goMin, minNodeValueOfSubTree:`, minNodeValueOfSubTree);
-
-          if(!node.right){
-            return null;
-          }
-          return node.right;
-        }
-
-        let result = _goMin(node.left);
-        
-        if (result === null){
-          node.left = null;
-          this.updateNodeHeight(node);
-          if (this.isImbalanced(node)){
-            console.log(`🍎imbalance detected, setting it: node: `, node);
-            imbalancedNode = node;
-          }
-          return true;
-        }
-        if (result instanceof Node){
-          node.left = result;
-          this.updateNodeHeight(node.left);
-          this.updateNodeHeight(node);
-          if (this.isImbalanced(node)){
-            console.log(`🍊🍎imbalance detected, setting it: node: `, node);
-            imbalancedNode = node;
-          }
-          return true;
-        }
-
-        this.updateNodeHeight(node);
-
-        if (imbalancedNode){
-          console.log(`🍊🍊imbalance detected, fixing it: node: `, node);
-          let problemNodeDirection = this.getProblemNodeDirection(node, imbalancedNode);
-          this.performRotations(imbalancedNode, node, problemNodeDirection);
-        }
-        if (!imbalancedNode && this.isImbalanced(node)){
-          console.log(`🍎🍊imbalance detected, setting it: node: `, node);
-          imbalancedNode = node;
-        }
-
-        return result;
-      }
-
-
-      // ~~~~~~ 🐤🍊🍎🐤🍊🍎🐤🍊🍎🐤🍊🍎🐤🍊 ~~~~~~ 
-      // ~~~~~~ 🐤🍊🍎🐤🍊🍎🐤🍊🍎🐤🍊🍎🐤🍊 ~~~~~~ 
-      // ~~~~~~ 🐤🍊🍎🐤🍊🍎🐤🍊🍎🐤🍊🍎🐤🍊 ~~~~~~ 
-
-      const _goMax = (node) => {
-        console.log(`~~ goMax ~~ node: `, node);
-
-        // base case
-        if(!node.right){
-          console.log(`base case of goMax, minNodeValueOfSubTree:`, maxNodeValueOfSubTree);
-
-          maxNodeValueOfSubTree = node.value;
-
-          if(!node.left){
-            return null;
-          }
-          return node.left;
-        }
-
-        let result = _goMax(node.right);
-        
-        if (result === null){
-          node.right = null;
-          this.updateNodeHeight(node);
-          if (this.isImbalanced(node)){
-            console.log(`🍎imbalance detected, setting it: node: `, node);
-            imbalancedNode = node;
-          }
-          return true;
-        }
-        if (result instanceof Node){
-          node.right = result;
-          this.updateNodeHeight(node.right);
-          this.updateNodeHeight(node);
-          if (this.isImbalanced(node)){
-            console.log(`🍊🍎imbalance detected, setting it: node: `, node);
-            imbalancedNode = node;
-          }
-          return true;
-        }
-
-        this.updateNodeHeight(node);
-
-        if (imbalancedNode){
-          console.log(`🍊🍊imbalance detected, fixing it: node: `, node);
-          let problemNodeDirection = this.getProblemNodeDirection(node, imbalancedNode);
-          this.performRotations(imbalancedNode, node, problemNodeDirection);
-        }
-        if (!imbalancedNode && this.isImbalanced(node)){
-          console.log(`🍎🍊imbalance detected, setting it: node: `, node);
-          imbalancedNode = node;
-        }
-
-        return result;
-      }
-
-      if (node.left.height > node.right.height){
-        let result = _goMax(node.left);
-
-        if (result === null){
-          node.right = null;
-          this.updateNodeHeight(node);
-          if (this.isImbalanced(node)){
-            console.log(`🍎imbalance detected, setting it: node: `, node);
-            imbalancedNode = node;
-          }
-        }
-        if (result instanceof Node){
-          node.right = result;
-          this.updateNodeHeight(node.right);
-          this.updateNodeHeight(node);
-          if (this.isImbalanced(node)){
-            console.log(`🍊🍎imbalance detected, setting it: node: `, node);
-            imbalancedNode = node;
-          }
-        }
-
-        node.value = maxNodeValueOfSubTree;
-        console.log(`done with delete, node: `, node);
-      } else {
-        let result = _goMin(node.right);
-
-        if (result === null){
-          node.right = null;
-          this.updateNodeHeight(node);
-          if (this.isImbalanced(node)){
-            console.log(`🍎imbalance detected, setting it: node: `, node);
-            imbalancedNode = node;
-          }
-        }
-        if (result instanceof Node){
-          node.right = result;
-          this.updateNodeHeight(node.right);
-          this.updateNodeHeight(node);
-          if (this.isImbalanced(node)){
-            console.log(`🍊🍎imbalance detected, setting it: node: `, node);
-            imbalancedNode = node;
-          }
-        }
-
-        node.value = minNodeValueOfSubTree;
-        console.log(`done with delete, node: `, node);
-      }
-
-      return node;
+      this.removeNodeWithTwoChildren(node);
     }
 
     // if only one child, make that child the new node
@@ -355,6 +184,170 @@ class AVLTree {
     }
     return node.right;
 
+  }
+
+  removeNodeWithTwoChildren(node){
+    // debugger
+    console.log(`it has 2 children`);
+    let maxNodeValueOfSubTree;
+    let minNodeValueOfSubTree;
+    let imbalancedNode;
+    
+    // ~~~~~~ 🐤🍊🍎🐤🍊🍎🐤🍊🍎🐤🍊🍎🐤🍊 ~~~~~~ 
+
+    const _goMin = (node) => {
+      console.log(`~~ goMin ~~ node: `, node);
+      // base case
+      if(!node.left){
+        minNodeValueOfSubTree = node.value;
+        console.log(`base case of goMin, minNodeValueOfSubTree:`, minNodeValueOfSubTree);
+
+        if(!node.right){
+          return null;
+        }
+        return node.right;
+      }
+
+      let result = _goMin(node.left);
+      
+      if (result === null){
+        node.left = null;
+        this.updateNodeHeight(node);
+        if (this.isImbalanced(node)){
+          console.log(`🍎imbalance detected, setting it: node: `, node);
+          imbalancedNode = node;
+        }
+        return true;
+      }
+      if (result instanceof Node){
+        node.left = result;
+        this.updateNodeHeight(node.left);
+        this.updateNodeHeight(node);
+        if (this.isImbalanced(node)){
+          console.log(`🍊🍎imbalance detected, setting it: node: `, node);
+          imbalancedNode = node;
+        }
+        return true;
+      }
+
+      this.updateNodeHeight(node);
+
+      if (imbalancedNode){
+        console.log(`🍊🍊imbalance detected, fixing it: node: `, node);
+        let problemNodeDirection = this.getProblemNodeDirection(node, imbalancedNode);
+        this.performRotations(imbalancedNode, node, problemNodeDirection);
+      }
+      if (!imbalancedNode && this.isImbalanced(node)){
+        console.log(`🍎🍊imbalance detected, setting it: node: `, node);
+        imbalancedNode = node;
+      }
+
+      return result;
+    }
+
+    // ~~~~~~ 🐤🍊🍎🐤🍊🍎🐤🍊🍎🐤🍊🍎🐤🍊 ~~~~~~ 
+
+    const _goMax = (node) => {
+      console.log(`~~ goMax ~~ node: `, node);
+
+      // base case
+      if(!node.right){
+        console.log(`base case of goMax, minNodeValueOfSubTree:`, maxNodeValueOfSubTree);
+
+        maxNodeValueOfSubTree = node.value;
+
+        if(!node.left){
+          return null;
+        }
+        return node.left;
+      }
+
+      let result = _goMax(node.right);
+      
+      if (result === null){
+        node.right = null;
+        this.updateNodeHeight(node);
+        if (this.isImbalanced(node)){
+          console.log(`🍎imbalance detected, setting it: node: `, node);
+          imbalancedNode = node;
+        }
+        return true;
+      }
+      if (result instanceof Node){
+        node.right = result;
+        this.updateNodeHeight(node.right);
+        this.updateNodeHeight(node);
+        if (this.isImbalanced(node)){
+          console.log(`🍊🍎imbalance detected, setting it: node: `, node);
+          imbalancedNode = node;
+        }
+        return true;
+      }
+
+      this.updateNodeHeight(node);
+
+      if (imbalancedNode){
+        console.log(`🍊🍊imbalance detected, fixing it: node: `, node);
+        let problemNodeDirection = this.getProblemNodeDirection(node, imbalancedNode);
+        this.performRotations(imbalancedNode, node, problemNodeDirection);
+      }
+      if (!imbalancedNode && this.isImbalanced(node)){
+        console.log(`🍎🍊imbalance detected, setting it: node: `, node);
+        imbalancedNode = node;
+      }
+
+      return result;
+    }
+
+    if (node.left.height > node.right.height){
+      let result = _goMax(node.left);
+
+      if (result === null){
+        node.right = null;
+        this.updateNodeHeight(node);
+        if (this.isImbalanced(node)){
+          console.log(`🍎imbalance detected, setting it: node: `, node);
+          imbalancedNode = node;
+        }
+      }
+      if (result instanceof Node){
+        node.right = result;
+        this.updateNodeHeight(node.right);
+        this.updateNodeHeight(node);
+        if (this.isImbalanced(node)){
+          console.log(`🍊🍎imbalance detected, setting it: node: `, node);
+          imbalancedNode = node;
+        }
+      }
+
+      node.value = maxNodeValueOfSubTree;
+      console.log(`done with delete, node: `, node);
+    } else {
+      let result = _goMin(node.right);
+
+      if (result === null){
+        node.right = null;
+        this.updateNodeHeight(node);
+        if (this.isImbalanced(node)){
+          console.log(`🍎imbalance detected, setting it: node: `, node);
+          imbalancedNode = node;
+        }
+      }
+      if (result instanceof Node){
+        node.right = result;
+        this.updateNodeHeight(node.right);
+        this.updateNodeHeight(node);
+        if (this.isImbalanced(node)){
+          console.log(`🍊🍎imbalance detected, setting it: node: `, node);
+          imbalancedNode = node;
+        }
+      }
+
+      node.value = minNodeValueOfSubTree;
+      console.log(`done with delete, node: `, node);
+    }
+
+    return node;
   }
 
   // ^^^^^^^^^^ delete ^^^^^^^^^
@@ -581,7 +574,6 @@ class AVLTree {
     if ( typeof numericalValue === 'number' ) { return true; }
     return false;
   }
-  // delete
   // contains
   // findMin
   // findMax
