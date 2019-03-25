@@ -88,16 +88,28 @@ class AVLTree {
     let imbalancedNode;
 
     const _go = (node) => {
-      console.log(`🥦node: `, node);
 
       let result;
+
+      // root node is the value
+      if(node.value === value){
+        // located node to be deleted
+        result = new Node(node.value);
+
+        // remove the node
+        this.root = this.removeNode(node);
+        if ( this.root ) { this.updateNodeHeight(this.root); }
+
+        return result;
+      }
+
       if (node.right && node.right.value === value){
         // located node to be deleted
         result = node.right;
 
         // remove the node
         node.right = this.removeNode(node.right);
-        if ( node.right) { this.updateNodeHeight(node.right) };
+        if ( node.right) { this.updateNodeHeight(node.right); }
         this.updateNodeHeight(node);
 
         // check for problem nodes
@@ -113,7 +125,7 @@ class AVLTree {
 
         // remove the node
         node.left = this.removeNode(node.left);
-        if ( node.left) { this.updateNodeHeight(node.left) };
+        if ( node.left) { this.updateNodeHeight(node.left); }
         this.updateNodeHeight(node);
         
         // check for problem nodes
@@ -155,6 +167,9 @@ class AVLTree {
     
     let result = _go(this.root);
 
+    // root is gone
+    if(!this.root){ return result; }
+    
     // root imbalance
     if (this.isImbalanced(this.root)){
       console.log(`root imbalance detected: `, this.root);
@@ -175,7 +190,7 @@ class AVLTree {
 
     // if two children --> Find sub tree min or max --> replace that node
     if (node.left && node.right){
-      this.removeNodeWithTwoChildren(node);
+      return this.removeNodeWithTwoChildren(node);
     }
 
     // if only one child, make that child the new node
@@ -243,7 +258,7 @@ class AVLTree {
       }
 
       return result;
-    }
+    };
 
     // ~~~~~~ 🐤🍊🍎🐤🍊🍎🐤🍊🍎🐤🍊🍎🐤🍊 ~~~~~~ 
 
@@ -297,7 +312,7 @@ class AVLTree {
       }
 
       return result;
-    }
+    };
 
     if (node.left.height > node.right.height){
       let result = _goMax(node.left);
@@ -361,7 +376,6 @@ class AVLTree {
   }
 
   performRotations(originalRoot, parentNode, problemNodeDirection){
-    // debugger
     let leftHeight = this.getLeftHeight(originalRoot);
     let rightHeight = this.getRightHeight(originalRoot);
 
@@ -574,6 +588,7 @@ class AVLTree {
     if ( typeof numericalValue === 'number' ) { return true; }
     return false;
   }
+
   // contains
   // findMin
   // findMax
