@@ -31,7 +31,9 @@ class Logic extends React.Component {
     // this.tree = generateTree(this.props.nodeCount);
     // let values = [71, 35, 87, 27, 61, 84, 96, 16, 30, 53, 70, 97, 8, 24, 28, 32, 39, 56];
     // let values = [9, 5, 30, 3, 7, 20, 32, 2, 4, 6, 8, 10, 22, 34, 21];
-    let values = [9, 5, 30, 3, 7, 20, 32, 2, 4, 6, 8, 10, 22, 34];
+    // let values = [9, 5, 30, 3, 7, 20, 32, 2, 4, 6, 8, 10, 22, 34];
+    // let values = [71, 35, 87, 27, 61, 84, 96, 16, 30, 53, 70, 97, 8, 24, 28, 32, 39, 56];
+    let values = [61, 35, 71, 27, 53, 70, 96, 16, 30, 39, 56, 87, 97, 8, 24, 28, 32];
 
     this.tree = generateSpecificTree(values);
     this.copyAndUpdateD3Data();
