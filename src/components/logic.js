@@ -135,9 +135,43 @@ class Logic extends React.Component {
 const generateSpecificTree = (values) => {
   let tree = new AVLTree();
 
-  for(let i = 0; i < values.length; i++){
-    tree.insert(values[i])
+  let insertOrder = [54, 84, 32, 68, 88, 23, 58, 62, 28, 99, 6, 72, 75, 94, 69, 89, 43, 80, 40, 90, 42, 45, 53, 48, 93];
+  let removeOrder = [88, 48, 84, 43, 68, 80, 6, 90, 32, 40, 93, 28, 94, 23, 99, 75, 69, 23, 28]
+
+  for(let i = 0; i < insertOrder.length; i++){
+    console.log(`inserting 🐤: `, insertOrder[i]);
+    tree.insert(insertOrder[i])
   }
+  tree.remove(88);
+  tree.remove(48);
+  tree.remove(84);
+
+  // for(let i = 0; i < values2.length; i++){
+  //   console.log(`removing: 🐤`, values2[i]);
+  //   tree.remove(values2[i]);
+  // }
+
+
+  // values = [];
+  // for(let i = 0; i < 30; i++){
+  //   let num = Math.floor(Math.random() * 10 * 10);
+  //   values.push(num);
+  // }
+
+  // for(let i = 0; i < values.length; i++){
+  //   console.log(`inserting 🐤: `, values[i]);
+  //   tree.insert(values[i])
+  // }
+
+  // for(let i = 0; i < values.length * 30; i++){
+  //   let index = Math.floor(values.length * Math.random());
+  //   if(tree.contains(values[index])){
+  //     console.log(`removing: 🐤`, values[index]);
+  //     tree.remove(values[index]);
+  //   }
+  // }
+
+
 
   return tree;
 }
