@@ -11,7 +11,6 @@ class AVLTree {
     this.printComputations = 0;
 
     this.imbalancedNode = null;
-
   }
 
   insert(value){
@@ -62,7 +61,6 @@ class AVLTree {
     
     let result = _go(this.root);
 
-    // root imbalance
     this.handleRootImbalance();
 
     this.imbalancedNode = null;
@@ -70,19 +68,18 @@ class AVLTree {
   }
 
   remove(value){
-    debugger
     if (!this.isNumericInput(value)){ return undefined; }
     value = Number(value);
 
     if (this.treeIsEmpty()){ return undefined; }
 
     this.removeComputations = 0;
-    console.log(`~~~~~~`);
-    console.log(`in remove, value: `, value);
+    // console.log(`~~~~~~`);
+    // console.log(`in remove, value: `, value);
 
     const _go = (node) => {
 
-      console.log(`in go, node.value: `, node.value);
+      // console.log(`in go, node.value: `, node.value);
 
       this.removeComputations++;
 
@@ -90,21 +87,14 @@ class AVLTree {
 
       // root node is the value
       if(node.value === value){
-        console.log(`removing root case: `, node.value);
+        // console.log(`removing root case: `, node.value);
 
         // located node to be deleted
         result = new Node(node.value);
         
         // remove the node
         this.root = this.removeNode(node);
-
-        console.log(`result from remove node: `, this.root);
-        
-        // if(this.imbalancedNode){
-          this.fixImbalances(node);
-          // this.setImbalancedNode(node);
-        // }
-
+        this.fixImbalances(node);
         if ( this.root ) { this.updateNodeHeight(this.root); }
 
         return result;
@@ -153,7 +143,7 @@ class AVLTree {
       this.fixImbalances(node);
       this.setImbalancedNode(node);
       
-      this.imbalancedNode = null;
+      // this.imbalancedNode = null;
 
       this.updateNodeHeight(node);
       return result;
@@ -167,6 +157,7 @@ class AVLTree {
     // root imbalance
     this.handleRootImbalance();
 
+    this.imbalancedNode = null;
     return result;
   }
 
@@ -190,18 +181,18 @@ class AVLTree {
   }
 
   removeNodeWithTwoChildren(node){
+    
     let maxNodeValueOfSubTree;
     let minNodeValueOfSubTree;
 
-    console.log(`case: node has two children: `, node.value);
+    // console.log(`case: node has two children: `, node.value);
     const _deleteMin = (node) => {
-      console.log(`in delete min, node: `, node);
+      // console.log(`in delete min, node: `, node);
 
       this.removeComputations++;
       // base case
       if(!node.left){
         minNodeValueOfSubTree = node.value;
-
         if(!node.right){
           return null;
         }
@@ -209,10 +200,12 @@ class AVLTree {
       }
 
       let result = _deleteMin(node.left);
-      
+      // console.log(`result internal to _deleteMin: `, result);
+
       if (result === true) {
         this.fixImbalances(node);
         this.setImbalancedNode(node);
+        this.updateNodeHeight(node);
         return result;
       } else {
         node.left = result;
@@ -222,15 +215,13 @@ class AVLTree {
         return true;
       }
     };
-
+    
     const _deleteMax = (node) => {
-      console.log(`in delete max, node: `, node);
+      // console.log(`in delete max, node: `, node);
       this.removeComputations++;
       // base case
       if(!node.right){
-
         maxNodeValueOfSubTree = node.value;
-
         if(!node.left){
           return null;
         }
@@ -238,12 +229,12 @@ class AVLTree {
       }
 
       let result = _deleteMax(node.right);
-      
-      console.log(`result internal to _deleteMax: `, result);
+      // console.log(`result internal to _deleteMax: `, result);
 
       if (result === true) {
         this.fixImbalances(node);
         this.setImbalancedNode(node);
+        this.updateNodeHeight(node);
         return result;
       } else {
         node.right = result;
@@ -256,30 +247,49 @@ class AVLTree {
 
     let result;
     if (node.left.height > node.right.height){
-      console.log(`going max in left sub tree, node.left.height: `, node.left.height);
+      // console.log(`going max in left sub tree, node.left.height: `, node.left.height);
       result = _deleteMax(node.left);
-      console.log(`result after deleteMax recursion: `, result);
+      // console.log(`result after deleteMax recursion: `, result);
       node.value = maxNodeValueOfSubTree;
+      if (result === true) {
+        this.fixImbalances(node);
+        this.setImbalancedNode(node);
+      } else {
+        node.left = result;
+        this.updateNodeHeight(node);
+        if (node.left) { this.updateNodeHeight(node.left); }
+        this.setImbalancedNode(node);
+      }
     } else {
       result = _deleteMin(node.right);
       node.value = minNodeValueOfSubTree;
+      if (result === true) {
+        this.fixImbalances(node);
+        this.setImbalancedNode(node);
+      } else {
+        node.right = result;
+        this.updateNodeHeight(node);
+        if (node.right) { this.updateNodeHeight(node.right); }
+        this.setImbalancedNode(node);
+      }
     }
 
-    if (result === true) {
-      this.setImbalancedNode(node);
-    } else {
-      node.right = result;
-      this.updateNodeHeight(node);
-      if (node.right) { this.updateNodeHeight(node.right); }
-      this.setImbalancedNode(node);
-    }
+    // if (result === true) {
+    //   this.fixImbalances(node);
+    //   this.setImbalancedNode(node);
+    // } else {
+    //   node.right = result;
+    //   this.updateNodeHeight(node);
+    //   if (node.right) { this.updateNodeHeight(node.right); }
+    //   this.setImbalancedNode(node);
+    // }
 
     return node;
   }
 
   handleRootImbalance(){
     if (this.isImbalanced(this.root)){
-      console.log(`in root imbalance: 🍓`);
+      // console.log(`in root imbalance: 🍓`);
       this.performRotations(this.root);
     }
   }
@@ -596,58 +606,3 @@ class AVLTree {
 }
 
 export default AVLTree;
-
-// let values = [54, 84, 32, 68, 88, 23, 58, 62, 28, 99, 6, 72, 75, 94, 69, 89, 43, 80, 40, 90, 42, 45, 53, 48, 93];
-
-// let values2 = [88, 48, 84, 43, 68, 80, 6, 90, 32, 40, 93, 28, 94, 23, 99, 75, 69, 23, 28]
-
-// removing: 🐤 88
-// removing: 🐤 48
-// removing: 🐤 84
-// removing: 🐤 43
-// removing: 🐤 68
-// removing: 🐤 80
-// removing: 🐤 6
-// removing: 🐤 90
-// removing: 🐤 32
-// removing: 🐤 40
-// removing: 🐤 93
-// removing: 🐤 28
-// removing: 🐤 94
-// removing: 🐤 23
-// removing: 🐤 99
-// removing: 🐤 75
-// removing: 🐤 69
-// removing: 🐤 23
-// removing: 🐤 28
-
-// inserting 🐤:  54
-// inserting 🐤:  84
-// inserting 🐤:  32
-// inserting 🐤:  68
-// inserting 🐤:  88
-// inserting 🐤:  23
-// inserting 🐤:  58
-// inserting 🐤:  62
-// inserting 🐤:  28
-// inserting 🐤:  99
-// inserting 🐤:  6
-// inserting 🐤:  72
-// inserting 🐤:  75
-// inserting 🐤:  6
-// inserting 🐤:  94
-// inserting 🐤:  69
-// inserting 🐤:  89
-// inserting 🐤:  43
-// inserting 🐤:  80
-// inserting 🐤:  58
-// inserting 🐤:  40
-// inserting 🐤:  88
-// inserting 🐤:  68
-// inserting 🐤:  90
-// inserting 🐤:  42
-// inserting 🐤:  45
-// inserting 🐤:  53
-// inserting 🐤:  48
-// inserting 🐤:  93
-// inserting 🐤:  68
