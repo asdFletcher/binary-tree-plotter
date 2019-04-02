@@ -12,10 +12,8 @@ const mapStateToProps = (state) => {
 
 class Graph extends React.Component {
 
-  // CIRCLE_RADIUS = 20;
-  CIRCLE_RADIUS = 0;
-  // EDGE_THICKNESS = 3;
-  EDGE_THICKNESS = 0;
+  CIRCLE_RADIUS = 20;
+  EDGE_THICKNESS = 3;
   NOMINAL_VERTICAL_SEPARATION = 75;
   margin = {top: 0, right: 0, bottom: 0, left: 0};
   width = 960 - this.margin.right - this.margin.left;

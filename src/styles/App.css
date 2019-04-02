@@ -24,30 +24,30 @@
 }
 
 label , input, button {
-  margin: 5px 0px 5px 0px;
-  width: 100%;
+  /* margin: 5px 0px 5px 0px;
+  width: 100%; */
 
 }
 
 body {
-  display: flex;
+  /* display: flex;
   flex-wrap: none;
-  flex-direction: row;
+  flex-direction: row; */
 }
 
 #root {
-  width: 175px;
-  /* width: 1600px; */
+  /* width: 175px; */
+  width: 1600px;
 }
 
 .form {
-  margin-right: 25px;
+  /* margin-right: 25px; */
 }
 
 section {
-  margin: 5px 0px 5px 0px;
+  /* margin: 5px 0px 5px 0px;
   width: 100%;
   padding: 2px;
   border: 3px solid rgb(173, 173, 238);
-  border-radius: 5px;
+  border-radius: 5px; */
 }
