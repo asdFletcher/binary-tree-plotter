@@ -135,25 +135,52 @@ class Logic extends React.Component {
 const generateSpecificTree = (values) => {
   let tree = new AVLTree();
 
-  let insertOrder = [54, 84, 32, 68, 88, 23, 58, 62, 28, 99, 6, 72, 75, 94, 69, 89, 43, 80, 40, 90, 42, 45, 53, 48, 93];
-  let removeOrder = [88, 48, 84, 43, 68, 80, 6, 90, 32, 40, 93, 28, 94, 23, 99, 75, 69, 23, 28]
+  //~~~
+  // let insertOrder = [82, 92, 56, 40, 44, 76, 47, 63, 74, 10, 38, 48, 87, 66, 70, 25, 71, 8, 7, 53, 95, 6, 60, 31, 46];
+  // let removeOrder = [71, 66, 76, 25, 70];
+  
+  // let insertOrder = [54, 84, 32, 68, 88, 23, 58, 62, 28, 99, 6, 72, 75, 94, 69, 89, 43, 80, 40, 90, 42, 45, 53, 48, 93];
+  // let removeOrder = [88, 48, 84, 43, 68, 80, 6, 90, 32, 40, 93, 28, 94, 23, 99, 75, 69, 23, 28]
+  
+  // let insertOrder = [52, 69, 25, 9, 19, 93, 91, 95, 30, 48, 38, 49, 21, 2, 83, 81, 94, 16, 80, 82, 53, 45, 76, 4, 42, 41, 37, 12, 43, 58, 97, 60, 98, 90, 66, 18];
+  // let removeOrder = [12, 58, 52, 81, 38, 66, 82, 18, 2, 83, 37, 94, 21, 16, 98, 93, 25, 42, 9, 4, 19, 30]
+
+  //~~~
+
+  // values = [20, 10, 30, 5, 15, 25, 35, 2, 8, 13, 17, 40, 1];
+  // values = [30, 16, 40, 8, 22, 35, 50, 4, 12, 18, 25, 33, 37, 60, 0, 6, 10, 14, 19, 32, 9, 11];
+  // for(let i = 0; i < values.length; i++){
+  //   console.log(`inserting 🐤: `, values[i]);
+  //   tree.insert(values[i])
+  // }
+
+
+  // let insertOrder = [52, 69, 25, 9, 19, 93, 91, 95, 30, 48, 38, 49, 21, 2, 83, 81, 94, 16, 80, 82, 53, 45, 76, 4, 42, 41, 37, 12, 43, 58, 97, 60, 98, 90, 66, 18];
+  // let removeOrder = [12, 58, 52, 81, 38, 66, 82, 18, 2, 83, 37, 94, 21, 16, 98, 93, 25, 42, 9, 4, 19, 30]
+  // let insertOrder = [52, 30, 81, 19, 42, 69, 91, 9, 25, 41, 48, 58, 80, 83, 94, 2, 16, 21, 37, 45, 49, 53, 60, 76, 82, 90, 93, 97, 17, 44];
+  
+  // let insertOrder = [65, 13, 81, 7, 59, 74, 89, 2, 12, 38, 64, 69, 78, 85, 92, 3, 10, 30, 3, 61, 66, 72, 80, 82, 86, 91, 98, 37, 40];
+  let insertOrder = [65, 13, 81, 7, 59, 74, 89, 2, 12, 38, 64, 69, 78, 85, 92, 3, 10, 30, 3, 61, 66, 72, 80, 82, 86, 91, 98, 37, 40];
+  
 
   for(let i = 0; i < insertOrder.length; i++){
     console.log(`inserting 🐤: `, insertOrder[i]);
     tree.insert(insertOrder[i])
   }
-  tree.remove(88);
-  tree.remove(48);
-  tree.remove(84);
+  // let preRemoveOrder = [12,58,52,81, 38, 66, 82, 18, 2, 83];
+  // for(let i = 0; i < preRemoveOrder.length; i++){
+  //   tree.remove(preRemoveOrder[i]);
+  // }
 
   // for(let i = 0; i < values2.length; i++){
   //   console.log(`removing: 🐤`, values2[i]);
   //   tree.remove(values2[i]);
   // }
 
+  //~~~
 
   // values = [];
-  // for(let i = 0; i < 30; i++){
+  // for(let i = 0; i < 40; i++){
   //   let num = Math.floor(Math.random() * 10 * 10);
   //   values.push(num);
   // }
