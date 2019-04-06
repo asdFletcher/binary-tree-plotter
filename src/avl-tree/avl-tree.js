@@ -9,7 +9,7 @@ class AVLTree {
     this.findMaxComputations = 0;
     this.findMinComputations = 0;
     this.printComputations = 0;
-
+    
     this.imbalancedNode = null;
     this.imbalancedNodeParent = null;
   }
@@ -289,7 +289,6 @@ class AVLTree {
       this.performRotations(this.imbalancedNode, node, problemNodeDirection);
 
       while (this.imbalancedNode){
-        this.removeComputations++;
         let node = this.imbalancedNode;
         let parent = this.imbalancedNodeParent;
         let problemNodeDirection = this.getProblemNodeDirection(parent, node);
@@ -532,8 +531,11 @@ class AVLTree {
 
     if (this.treeIsEmpty()){ return false; }
 
+    this.containsComputations = 0;
+
     const _go = (node) => {
       // base case
+      this.containsComputations++;
       if(node.value === value){
         return true;
       }
@@ -560,12 +562,13 @@ class AVLTree {
   }
 
   findMin(){
-    
     if (this.treeIsEmpty()){ return undefined; }
+    this.findMinComputations = 0;
     
     let current = this.root;
 
     while(current.left){
+      this.findMinComputations++;
       current = current.left;
     }
 
@@ -573,12 +576,13 @@ class AVLTree {
   }
 
   findMax(){
-    
     if (this.treeIsEmpty()){ return undefined; }
+    this.findMaxComputations = 0;
     
     let current = this.root;
 
     while(current.right){
+      this.findMaxComputations++;
       current = current.right;
     }
 

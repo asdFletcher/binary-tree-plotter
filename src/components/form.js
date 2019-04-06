@@ -11,13 +11,14 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
   return({
     state: state,
-  })
+  });
 }
 
 class Form extends React.Component{
 
   state = {
     nodeCount: 0,
+    treeType: "AVLTree",
   }
 
   handleChange = (e) => {
@@ -38,21 +39,20 @@ class Form extends React.Component{
   handleRemoveRoot = () => {
     this.props.removeRoot();
   }
+  setTreeType = (e) => {
+    this.setState({treeType: e.target.name});
+  }
   handleGenerateTree = () => {
-    this.props.generateTree(this.state.numberOfNodes);
+    this.props.generateTree(this.state.treeType, this.state.numberOfNodes);
   }
   handleResetTree = () => {
     this.props.resetTree();
   }
-  handleFindParentValue = () => {
-    let num = this.props.findParentValue(this.state.findParentOfValue);
-    this.setState({parentValue: num});
-  }
   handleFindMaxValue = () => {
-    this.setState({maxValue: this.props.findMaxValue()});
+    this.setState({maxValue: this.props.findMax()});
   }
   handleFindMinValue = () => {
-    this.setState({minValue: this.props.findMinValue()});
+    this.setState({minValue: this.props.findMin()});
   }
   handleContains = () => {
     let contains = this.props.contains(this.state.containsValue)
@@ -77,11 +77,25 @@ class Form extends React.Component{
     res = res.toString();
     this.setState({printPostOrderString: res});
   }
+
   
   render(){
     return(
       <div className="form">
         <h2>Control panel:</h2>
+
+        <section>
+          <button
+          name="AVLTree"
+          onClick={this.setTreeType}
+          >AVL Tree</button>
+          <button
+            name="BinarySearchTree"
+            onClick={this.setTreeType}
+            >Binary Search Tree</button>
+          <div>Tree type:</div>
+          <div>{this.state.treeType}</div>
+        </section>
 
         <section>
           <div>Generate random tree</div>
@@ -124,18 +138,6 @@ class Form extends React.Component{
           <button
             onClick={this.handleRemoveRoot}
             >Remove Root</button>
-        </section>
-
-        <section>
-          <div>Find the parent value</div>
-          <label>Value:</label>
-          <input
-            name="findParentOfValue"
-            onChange={this.handleChange}></input>
-          <button
-            onClick={this.handleFindParentValue}
-            >Find parent value</button>
-            <div>Parent value: {this.state.parentValue}</div>
         </section>
 
         <section>

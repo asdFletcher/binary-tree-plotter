@@ -1,5 +1,4 @@
 import React from 'react';
-import '../styles/App.css';
 import * as d3 from "d3";
 import { connect } from 'react-redux';
 
@@ -17,7 +16,6 @@ class Graph extends React.Component {
   NOMINAL_VERTICAL_SEPARATION = 75;
   margin = {top: 0, right: 0, bottom: 0, left: 0};
   width = 960 - this.margin.right - this.margin.left;
-  // width = 1280 - this.margin.right - this.margin.left;
   height = 750 - this.margin.top - this.margin.bottom;
   diagonal = null;
   svg = null;
@@ -162,19 +160,15 @@ class Graph extends React.Component {
 }
 
 const getNodeClass = (node) => {
-  if(isNaN(node.value)){
-    return "node hide";
-  } else {
-    return "node";
-  }
+  let val = node.data.value;
+  if(isNaN(val) || val === undefined ||  val === null ){ return "node hide"; }
+  return "node";
 }
 
 const getLinkClass = (link) => {
-  if(isNaN(link.target.value)){
-    return "link hide";
-  } else {
-    return "link";
-  }
+  let val = link.target.data.value;
+  if(isNaN(val) || val === undefined ||  val === null ){ return "link hide"; }
+  return "link";
 }
 
 export default connect(mapStateToProps)(Graph);
