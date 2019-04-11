@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import './styles/reset.css';
-import './styles/treegraph.css';
+import './styles/reset.scss';
+import './styles/treegraph.scss';
 
 import TreeGraph from "./components/TreeGraph.js";
 import Graph from "./components/Graph.js";

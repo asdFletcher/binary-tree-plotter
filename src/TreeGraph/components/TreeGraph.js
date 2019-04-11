@@ -62,7 +62,6 @@ class TreeGraph extends React.Component {
     numberOfNodes = parseInt(numberOfNodes);
     this.tree = generateTree(type, numberOfNodes);
     this.copyAndUpdateD3Data();
-    console.log(`in generate tree: `, type, numberOfNodes);
   }
   
   calcRandom = () => {
@@ -180,7 +179,6 @@ const generateTree = (type, numberOfNodes) => {
     }
     default:{
       tree = new AVLTree();
-      console.log(`in default: `, type);
     }
   }
   let values = generateUniqueNumbers(numberOfNodes)
@@ -189,7 +187,6 @@ const generateTree = (type, numberOfNodes) => {
     tree.insert(values[i])
   }
 
-  console.log(`in generate tree: `, tree);
 
   return tree;
 }

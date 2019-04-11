@@ -1,0 +1,77 @@
+* {
+  box-sizing: border-box ;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 2px;
+}
+
+.hide {
+  display: none;
+}
+
+label , input, button {
+  margin: 5px 0px 5px 0px;
+  width: 100%;
+
+}
+
+body {
+  display: flex;
+  flex-wrap: none;
+  flex-direction: row;
+}
+
+.treegraph-form {
+  margin: 10px;
+  min-width: 175px;
+  max-width: 175px;
+}
+
+.graph {
+  margin: 10px 25px 10px 25px;
+  width: 100%;
+  min-width: 500px;
+  max-width: 900px;
+  outline: 1px solid red;
+}
+
+svg {
+  width: 100%;
+}
+
+.form {
+  margin-right: 25px;
+}
+
+section {
+  margin: 5px 0px 5px 0px;
+  width: 100%;
+  padding: 2px;
+  border: 3px solid rgb(173, 173, 238);
+  border-radius: 5px;
+}
+
+.node {
+  circle {
+    fill: #fff;
+    stroke: steelblue;
+    stroke-width: 3px;
+  }
+
+  text {
+    font: 24px sans-serif;
+  }
+
+  .height-text{
+    font-size: 20px;
+    fill: darkorange;
+  }
+
+  :hover {
+    cursor: pointer;
+  }
+
+}

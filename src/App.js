@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import './styles/reset.css';
-import './styles/base.css';
+import './styles/reset.scss';
+import './styles/base.scss';
 
 // import Cartesian from "./components/cartesian.js";
 import TreeGraphContainer from './TreeGraph/TreeGraphContainer.js';

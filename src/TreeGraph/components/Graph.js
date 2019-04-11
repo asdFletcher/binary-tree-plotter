@@ -36,7 +36,8 @@ class Graph extends React.Component {
     this.setState({width});
     this.setState({height});
     // console.log(`resizing`);
-    console.log(`height; ${this.state.height}, width: ${this.state.width}`);
+    // console.log(`element: `, element);
+    // console.log(`height: ${this.state.height}, width: ${this.state.width}`);
   }
 
   componentDidMount() {
@@ -58,7 +59,6 @@ class Graph extends React.Component {
     this.defineDiagonal();
     this.defineSVG();
     this.setVerticalSpacing();
-    this.setHorizontalSpacing();
     
     this.declareNodes();
     this.enterNodes();
@@ -80,13 +80,10 @@ class Graph extends React.Component {
     const { data } = this.props;
     this.root = d3.hierarchy(data);
   }
-
+  
   defineTree = () => {
-    this.tree = d3.tree().size([this.state.width, this.state.height])
-      // .size([this.state.width, this.state.height]);
-      // .size();
+    this.tree = d3.tree().size([this.state.width, this.state.height]);
 
-      console.log(`this.tree: `, this.tree);
     this.tree = this.tree(this.root);
   }
 
@@ -101,22 +98,11 @@ class Graph extends React.Component {
       .attr("width", this.state.width + this.margin.right + this.margin.left)
       .attr("height", this.state.height + this.margin.top + this.margin.bottom)
       .append("g")
-      .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
+      .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")")
   }
 
   setVerticalSpacing = () => {
     this.getNodes().forEach( this.calcNodeHeight );
-  }
-  setHorizontalSpacing = () => {
-    this.getNodes().forEach( this.calcNodeWidth );
-  }
-
-  calcNodeWidth = (node) => {
-    let maxWidth = 100;
-
-
-    // console.log(`node 🍊: ` , node);
-    // node.x = 100;
   }
 
   calcNodeHeight = (node) => {
