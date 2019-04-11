@@ -7,6 +7,7 @@ class BinarySearchTree {
     this.insertComputations = 0;
     this.removeComputations = 0;
     this.replacementNode = null;
+    this.containsComputations = 0;
   }
 
   insert(value){
@@ -210,10 +211,12 @@ class BinarySearchTree {
   contains(value){
     if (this.treeIsEmpty()) { return false; }
     if (!this.isNumericInput(value)) { return false; }
+    this.containsComputations = 0;
 
     value = Number(value);
 
-    function _go(node){
+    const _go = (node) => {
+      this.containsComputations++;
       if (!node) { return false; }
       if (node.value === value) { return true; }
       if (value > node.value) { return _go(node.right); }
@@ -246,8 +249,8 @@ class BinarySearchTree {
 
   findParent(value){
     const _go = (node) => {
-      this.removeComputations++;
       if (!node) { return undefined; }
+      this.removeComputations++;
 
       if (node.left && node.left.value === value){ return node; }
       if (node.right && node.right.value === value){ return node; }

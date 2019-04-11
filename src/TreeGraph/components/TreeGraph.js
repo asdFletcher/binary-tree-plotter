@@ -1,9 +1,8 @@
 import React from 'react';
-import Form from "./form.js";
-import Graph from "./graph.js";
+import Form from "./Form.js";
 
-import BinarySearchTree from "../binary-search-tree/binary-search-tree.js";
-import AVLTree from "../avl-tree/avl-tree.js";
+import BinarySearchTree from "../datastructures/binary-search-tree/binary-search-tree.js";
+import AVLTree from "../datastructures/avl-tree/avl-tree.js";
 
 import { connect } from 'react-redux';
 import * as actions from '../store/actions.js';
@@ -21,7 +20,7 @@ const mapStateToProps = (store) => {
   });
 };
 
-class Logic extends React.Component {
+class TreeGraph extends React.Component {
 
   constructor(props){
     super(props);
@@ -116,7 +115,7 @@ class Logic extends React.Component {
           printInOrder={this.printInOrder}
           printPostOrder={this.printPostOrder}
         />
-        <Graph />
+        
       </>
     );
   }
@@ -126,7 +125,6 @@ const generateSpecificTree = (values) => {
   let tree = new AVLTree();
 
   for(let i = 0; i < values.length; i++){
-    console.log(`inserting 🐤: `, values[i]);
     tree.insert(values[i])
   }
 
@@ -196,4 +194,4 @@ const generateTree = (type, numberOfNodes) => {
   return tree;
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Logic);
+export default connect(mapStateToProps, mapDispatchToProps)(TreeGraph);

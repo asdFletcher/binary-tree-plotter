@@ -1,5 +1,4 @@
 * {
-  /* outline: 1px solid blue !important; */
   box-sizing: border-box ;
 }
 
@@ -36,8 +35,8 @@ body {
 }
 
 #root {
-  width: 175px;
-  /* width: 1600px; */
+  /* width: 175px; */
+  width: 1600px;
 }
 
 .form {

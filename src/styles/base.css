@@ -1,0 +1,30 @@
+* {
+  /* outline: 1px solid blue !important; */
+}
+
+.treegraph-container {
+  /* outline: 1px solid red; */
+  display: flex;
+  width: 100%;
+}
+.treegraph-form{
+  width: 175px;
+}
+.graph {
+}
+
+.node .height-text{
+  font-size: 20px;
+  fill: darkorange;
+
+}
+
+main {
+  width: 100%;
+  max-width: 1280px;
+}
+
+g.node:hover {
+  cursor: pointer;
+  outline: 1px solid red;
+}
