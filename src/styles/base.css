@@ -11,6 +11,7 @@
   width: 175px;
 }
 .graph {
+  width: 100%;
 }
 
 .node .height-text{
