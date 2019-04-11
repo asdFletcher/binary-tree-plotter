@@ -81,7 +81,7 @@ class Form extends React.Component{
   
   render(){
     return(
-      <div className="form">
+      <div className="treegraph-form">
         <h2>Control panel:</h2>
 
         <section>
