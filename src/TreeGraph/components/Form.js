@@ -1,6 +1,9 @@
 import React from 'react';
 import * as actions from "../store/actions.js";
 import { connect } from 'react-redux';
+import { Button } from 'react-bootstrap';
+
+import './../styles/treegraph.scss';
 
 const mapDispatchToProps = (dispatch) => {
   return ({
@@ -17,8 +20,8 @@ const mapStateToProps = (state) => {
 class Form extends React.Component{
 
   state = {
-    nodeCount: 0,
     treeType: "AVLTree",
+    numberOfNodes: 10,
   }
 
   handleChange = (e) => {
@@ -78,110 +81,129 @@ class Form extends React.Component{
     this.setState({printPostOrderString: res});
   }
 
+  getStyle = (type) => {
+    if(type === this.state.treeType){
+      return "info"
+    }
+    return "outline-info"
+  }
   
   render(){
     return(
-      <div className="treegraph-form">
-        <h2>Control panel:</h2>
+        <div className="treegraph-form">
+          <h2>Control Panel</h2>
+          <div className="scrollzone">
+            <section>
+              <div className="form-title">Select tree type</div>
+              <Button
+                name="AVLTree"
+                onClick={this.setTreeType}
+                variant={this.getStyle("AVLTree")}
+                >AVL Tree</Button>
+              <Button
+                name="BinarySearchTree"
+                onClick={this.setTreeType}
+                variant={this.getStyle("BinarySearchTree")}
+                >Binary Search Tree</Button>
+            </section>
 
-        <section>
-          <button
-          name="AVLTree"
-          onClick={this.setTreeType}
-          >AVL Tree</button>
-          <button
-            name="BinarySearchTree"
-            onClick={this.setTreeType}
-            >Binary Search Tree</button>
-          <div>Tree type:</div>
-          <div>{this.state.treeType}</div>
-        </section>
+            <section>
+              <div className="form-title">Generate random tree</div>
+              <input
+                placeholder="Number of nodes"
+                name="numberOfNodes"
+                defaultValue="10"
+                onChange={this.handleChange}
+                ></input>
+              <Button
+                variant={this.getStyle("default")}
+                onClick={this.handleGenerateTree}
+                >Generate</Button>
+              <Button
+                variant={this.getStyle("default")}
+                onClick={this.handleResetTree}
+                >Reset</Button>
+            </section>
 
-        <section>
-          <div>Generate random tree</div>
-          <label>Number of nodes:</label>
-          <input
-            name="numberOfNodes"
-            onChange={this.handleChange}
-            ></input>
-          <button
-            onClick={this.handleGenerateTree}
-            >Generate</button>
-          <button
-            onClick={this.handleResetTree}
-            >Reset</button>
-        </section>
+            <section>
+              <div className="form-title">Add a node</div>
+              <input
+                placeholder="Node value"
+                name="nodeValueInsert"
+                onChange={this.handleChange}></input>
+              <Button
+                variant={this.getStyle("default")}
+                onClick={this.handleAddNode}
+                >Add Node</Button>
+              <Button
+                variant={this.getStyle("default")}
+                onClick={this.handleAddRandomNode}
+                >Add Random Node</Button>
+            </section>
 
-        <section>
-          <div>Add a node</div>
-          <label>Value:</label>
-          <input
-            name="nodeValueInsert"
-            onChange={this.handleChange}></input>
-          <button
-            onClick={this.handleAddNode}
-            >Add Node</button>
-          <button
-            onClick={this.handleAddRandomNode}
-            >Add Random Node</button>
-        </section>
+            <section>
+              <div className="form-title">Remove a node</div>
+              <input
+                placeholder="Node value"
+                name="nodeValueRemove"
+                onChange={this.handleChange}></input>
+              <Button
+                variant={this.getStyle("default")}
+                onClick={this.handleRemoveNode}
+                >Remove Node</Button>
+              <Button
+                variant={this.getStyle("default")}
+                onClick={this.handleRemoveRoot}
+                >Remove Root</Button>
+            </section>
 
-        <section>
-          <div>Remove a node</div>
-          <label>Value:</label>
-          <input
-            name="nodeValueRemove"
-            onChange={this.handleChange}></input>
-          <button
-            onClick={this.handleRemoveNode}
-            >Remove Node</button>
-          <button
-            onClick={this.handleRemoveRoot}
-            >Remove Root</button>
-        </section>
+            <section>
+              <Button
+                variant={this.getStyle("default")}
+                onClick={this.handleFindMaxValue}
+                >Find max value</Button>
+                <div className="dataOutput">Max: {this.state.maxValue}</div>
+                <Button
+                variant={this.getStyle("default")}
+                onClick={this.handleFindMinValue}
+                >Find min value</Button>
+                <div className="dataOutput">Min: {this.state.minValue}</div>
+            </section>
 
-        <section>
-          <button
-            onClick={this.handleFindMaxValue}
-            >Find max value</button>
-            <div>Max: {this.state.maxValue}</div>
-        </section>
+            <section>
+              <div className="form-title">Contains:</div>
+              <input
+                placeholder="Node value"
+                name="containsValue"
+                onChange={this.handleChange}></input>
+              <Button
+                variant={this.getStyle("default")}
+                onClick={this.handleContains}
+                >check</Button>
+                <div className="dataOutput">Contains? {this.state.contains}</div>
+            </section>
 
-        <section>
-          <button
-            onClick={this.handleFindMinValue}
-            >Find min value</button>
-            <div>Min: {this.state.minValue}</div>
-        </section>
-
-        <section>
-          <div>Contains:</div>
-          <label>Value:</label>
-          <input
-            name="containsValue"
-            onChange={this.handleChange}></input>
-          <button
-            onClick={this.handleContains}
-            >check</button>
-            <div>Contains? {this.state.contains}</div>
-        </section>
-
-        <section>
-          <div>Print:</div>
-          <button
-            onClick={this.handlePrintPreOrder}
-            >Pre order</button>
-            <div>Pre order: {this.state.printPreOrderString}</div>
-          <button
-            onClick={this.handlePrintInOrder}
-            >In order</button>
-            <div>In order: {this.state.printInOrderString}</div>
-          <button
-            onClick={this.handlePrintPostOrder}
-            >Post order</button>
-            <div>Post order: {this.state.printPostOrderString}</div>
-        </section>
-      </div>
+            <section>
+              <div className="form-title">Print:</div>
+              <Button
+                variant={this.getStyle("default")}
+                onClick={this.handlePrintPreOrder}
+                >Pre order</Button>
+                <div className="dataOutput">Pre order: {this.state.printPreOrderString}</div>
+              <Button
+                variant={this.getStyle("default")}
+                onClick={this.handlePrintInOrder}
+                >In order</Button>
+                <div className="dataOutput">In order: {this.state.printInOrderString}</div>
+              <Button
+                variant={this.getStyle("default")}
+                onClick={this.handlePrintPostOrder}
+                >Post order</Button>
+                <div className="dataOutput">Post order: {this.state.printPostOrderString}</div>
+            </section>
+          
+          </div>
+        </div>
     )
   }
 
