@@ -20,7 +20,7 @@ const mapStateToProps = (store) => {
   });
 };
 
-class TreeGraph extends React.Component {
+class Controller extends React.Component {
 
   constructor(props){
     super(props);
@@ -101,20 +101,19 @@ class TreeGraph extends React.Component {
     return (
       <>
         <Form 
-          addNode={this.addNode}
-          addRandomNode={this.addRandomNode}
-          generateTree={this.handleGenerateTree}
-          resetTree={() => this.handleGenerateTree(0)}
-          removeNode={this.removeNode}
-          findMax={this.findMax}
-          findMin={this.findMin}
-          contains={this.contains}
-          removeRoot={this.removeRoot}
-          printPreOrder={this.printPreOrder}
-          printInOrder={this.printInOrder}
-          printPostOrder={this.printPostOrder}
-        />
-        
+            addNode={this.addNode}
+            addRandomNode={this.addRandomNode}
+            generateTree={this.handleGenerateTree}
+            resetTree={() => this.handleGenerateTree(0)}
+            removeNode={this.removeNode}
+            findMax={this.findMax}
+            findMin={this.findMin}
+            contains={this.contains}
+            removeRoot={this.removeRoot}
+            printPreOrder={this.printPreOrder}
+            printInOrder={this.printInOrder}
+            printPostOrder={this.printPostOrder}
+          />
       </>
     );
   }
@@ -126,7 +125,6 @@ const generateSpecificTree = (values) => {
   for(let i = 0; i < values.length; i++){
     tree.insert(values[i])
   }
-
 
   return tree;
 }
@@ -191,4 +189,4 @@ const generateTree = (type, numberOfNodes) => {
   return tree;
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TreeGraph);
+export default connect(mapStateToProps, mapDispatchToProps)(Controller);

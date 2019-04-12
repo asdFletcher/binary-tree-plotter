@@ -20,8 +20,6 @@ class Graph extends React.Component {
   EDGE_THICKNESS = 3;
   NOMINAL_VERTICAL_SEPARATION = 75;
   margin = {top: 0, right: 0, bottom: 0, left: 0};
-  // width = 960 - this.margin.right - this.margin.left;
-  // height = 750 - this.margin.top - this.margin.bottom;
   diagonal = null;
   svg = null;
   tree = null;
@@ -35,14 +33,9 @@ class Graph extends React.Component {
     let width = element.clientWidth;
     this.setState({width});
     this.setState({height});
-    // console.log(`resizing`);
-    // console.log(`element: `, element);
-    // console.log(`height: ${this.state.height}, width: ${this.state.width}`);
   }
 
   componentDidMount() {
-    // this.setState({domwidth: this.getDOMWidth()});
-    // console.log(`in mounted: `, this.state);
     window.addEventListener("resize", this.updateDimensions.bind(this));
     this.updateDimensions();
   }
