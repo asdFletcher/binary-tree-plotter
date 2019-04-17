@@ -1,13 +1,15 @@
 import React from 'react';
 import Form from "./Form.js";
 
-import BinarySearchTree from "../datastructures/binary-search-tree/binary-search-tree.js";
-import AVLTree from "../datastructures/avl-tree/avl-tree.js";
-
 import { connect } from 'react-redux';
 import * as actions from '../store/actions.js';
 
 import { copyTree, generateUniqueNumbers } from "../util/util.js";
+
+// import BinarySearchTree from "../datastructures/binary-search-tree/binary-search-tree.js";
+// import AVLTree from "../datastructures/avl-tree/avl-tree.js";
+const AVLTree = require("data-structures-and-algorithms").AVLTree;
+const BinarySearchTree = require("data-structures-and-algorithms").BST;
 
 const mapDispatchToProps = (dispatch) => {
   return ({
