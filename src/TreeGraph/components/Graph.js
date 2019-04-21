@@ -29,8 +29,8 @@ class Graph extends React.Component {
 
   updateDimensions() {
     let element =  document.getElementsByClassName('graph')[0];
-    let height = element.clientHeight;
-    let width = element.clientWidth;
+    let height = element && element.clientHeight;
+    let width = element && element.clientWidth;
     this.setState({width});
     this.setState({height});
   }
