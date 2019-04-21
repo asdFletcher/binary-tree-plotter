@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import './styles/reset.scss';
 import './styles/base.scss';
 
-// import Cartesian from "./components/cartesian.js";
 import TreeGraphContainer from './TreeGraph/components/TreeGraphContainer.js';
+import Cartesian from './CartesianGraph/components/Cartesian.js';
 
 class App extends Component {
 
@@ -12,6 +12,7 @@ class App extends Component {
     return (
       <>
         <TreeGraphContainer />
+        <Cartesian />
       </>
     );
   }
