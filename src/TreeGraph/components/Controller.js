@@ -10,6 +10,7 @@ import { copyTree, generateUniqueNumbers } from "../util/util.js";
 // import AVLTree from "../datastructures/avl-tree/avl-tree.js";
 const AVLTree = require("data-structures-and-algorithms").AVLTree;
 const BinarySearchTree = require("data-structures-and-algorithms").BST;
+const SplayTree = require("data-structures-and-algorithms").SplayTree;
 
 const mapDispatchToProps = (dispatch) => {
   return ({
@@ -31,8 +32,8 @@ class Controller extends React.Component {
   }
   
   componentDidMount(){
-    // this.tree = generateSpecificTree(values);
-    this.handleGenerateTree("AVLTree", 12);
+    // this.tree = generateSpecificTree();
+    this.handleGenerateTree("AVLTree", 10);
     this.copyAndUpdateD3Data();
   }
 
@@ -83,6 +84,7 @@ class Controller extends React.Component {
 
   contains = (value) => {
     let result = this.tree.contains(value);
+    this.copyAndUpdateD3Data();
     return result;
   }
 
@@ -122,8 +124,9 @@ class Controller extends React.Component {
 }
 
 const generateSpecificTree = (values) => {
-  let tree = new AVLTree();
+  let tree = new SplayTree();
 
+  values = [66, 91, 21, 89, 39, 18, 54, 76, 66, 32]
   for(let i = 0; i < values.length; i++){
     tree.insert(values[i])
   }
@@ -175,6 +178,10 @@ const generateTree = (type, numberOfNodes) => {
     }
     case "BinarySearchTree": {
       tree = new BinarySearchTree();
+      break;
+    }
+    case "SplayTree": {
+      tree = new SplayTree();
       break;
     }
     default:{
