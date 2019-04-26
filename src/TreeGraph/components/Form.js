@@ -105,6 +105,11 @@ class Form extends React.Component{
                 onClick={this.setTreeType}
                 variant={this.getStyle("BinarySearchTree")}
                 >Binary Search Tree</Button>
+              <Button
+                name="SplayTree"
+                onClick={this.setTreeType}
+                variant={this.getStyle("SplayTree")}
+                >Splay Tree</Button>
             </section>
 
             <section>

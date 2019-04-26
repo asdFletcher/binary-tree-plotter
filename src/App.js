@@ -4,14 +4,14 @@ import './styles/reset.scss';
 import './styles/base.scss';
 
 import TreeGraphContainer from './TreeGraph/components/TreeGraphContainer.js';
-import Cartesian from './CartesianGraph/components/Cartesian.js';
+import Cartesian from './CartesianGraph/components/cartesian.js';
 
 class App extends Component {
 
   render() {
     return (
       <>
-        <TreeGraphContainer />
+        {/* <TreeGraphContainer /> */}
         <Cartesian />
       </>
     );
