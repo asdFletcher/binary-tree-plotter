@@ -136,4 +136,23 @@ h2 {
     cursor: pointer;
   }
 
+
+
+}
+
+.red {
+  fill: red;
+  stroke: red;
+  circle {
+    stroke: red;
+    stroke-width: 3px;
+  }
+}
+.black {
+  circle {
+    stroke: black;
+    stroke-width: 3px;
+  }
+  fill: black;
+  stroke: black;
 }

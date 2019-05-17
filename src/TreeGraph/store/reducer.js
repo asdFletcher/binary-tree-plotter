@@ -1,7 +1,8 @@
 const initialState = {
   d3Data: {},
-  nodeCount: 5,
+  numberOfNodes: 10,
   displayNumbers: true,
+  treeType: 'RedBlackTree',
 };
 
 const store = (state = initialState, action) => {
@@ -11,6 +12,20 @@ const store = (state = initialState, action) => {
       const newState = {
         ...state,
         d3Data: payload,
+      }
+      return newState;
+    }
+    case "UPDATE_TREE_TYPE": {
+      const newState = {
+        ...state,
+        treeType: payload,
+      }
+      return newState;
+    }
+    case "UPDATE_NUM_NODES": {
+      const newState = {
+        ...state,
+        numberOfNodes: payload,
       }
       return newState;
     }
