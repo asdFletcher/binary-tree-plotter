@@ -5,12 +5,18 @@ export const updateD3Data = (payload) => {
   }
 }
 
-// export const updateNodeCount = (payload) => {
-//   return {
-//     type: "UPDATE_NODE_COUNT",
-//     payload: payload
-//   }
-// }
+export const updateNumNodes = (payload) => {
+  return {
+    type: "UPDATE_NUM_NODES",
+    payload: payload
+  }
+}
+export const updateTreeType = (payload) => {
+  return {
+    type: "UPDATE_TREE_TYPE",
+    payload: payload
+  }
+}
 
 export const toggleNumbers = () => {
   return {

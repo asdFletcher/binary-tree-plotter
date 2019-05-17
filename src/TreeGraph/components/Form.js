@@ -8,20 +8,24 @@ import './../styles/treegraph.scss';
 const mapDispatchToProps = (dispatch) => {
   return ({
     toggleNumbers: () => dispatch(actions.toggleNumbers()),
+    updateTreeType: (payload) => dispatch(actions.updateTreeType(payload)),
+    updateNumNodes: (payload) => dispatch(actions.updateNumNodes(payload)),
   });
 };
 
 const mapStateToProps = (state) => {
   return({
     state: state,
+    treeType: state.treeType,
+    numberOfNodes: state.numberOfNodes,
   });
 }
 
 class Form extends React.Component{
+  state = {}
 
-  state = {
-    treeType: "AVLTree",
-    numberOfNodes: 10,
+  componentDidMount(){
+    this.setState({numberOfNodes: this.props.numberOfNodes})
   }
 
   handleChange = (e) => {
@@ -42,11 +46,14 @@ class Form extends React.Component{
   handleRemoveRoot = () => {
     this.props.removeRoot();
   }
-  setTreeType = (e) => {
-    this.setState({treeType: e.target.name});
+  setTreeType = async (e) => {
+    let treeType = e.target.name;
+    await this.props.updateTreeType(treeType);
+    this.handleGenerateTree();
   }
-  handleGenerateTree = () => {
-    this.props.generateTree(this.state.treeType, this.state.numberOfNodes);
+  handleGenerateTree = async () => {
+    await this.props.updateNumNodes(this.state.numberOfNodes);
+    this.props.generateTree();
   }
   handleResetTree = () => {
     this.props.resetTree();
@@ -82,7 +89,7 @@ class Form extends React.Component{
   }
 
   getStyle = (type) => {
-    if(type === this.state.treeType){
+    if(type === this.props.treeType){
       return "info"
     }
     return "outline-info"
@@ -110,6 +117,11 @@ class Form extends React.Component{
                 onClick={this.setTreeType}
                 variant={this.getStyle("SplayTree")}
                 >Splay Tree</Button>
+              <Button
+                name="RedBlackTree"
+                onClick={this.setTreeType}
+                variant={this.getStyle("RedBlackTree")}
+                >Red Black Tree</Button>
             </section>
 
             <section>

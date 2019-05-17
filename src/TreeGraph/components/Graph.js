@@ -179,6 +179,12 @@ class Graph extends React.Component {
 const getNodeClass = (node) => {
   let val = node.data.value;
   if(isNaN(val) || val === undefined ||  val === null ){ return "node hide"; }
+  if (node.data.color === 'black') {
+    return "node black"
+  }
+  if (node.data.color === 'red') {
+    return "node red"
+  }
   return "node";
 }
 

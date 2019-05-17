@@ -8,9 +8,11 @@ import { copyTree, generateUniqueNumbers } from "../util/util.js";
 
 // import BinarySearchTree from "../datastructures/binary-search-tree/binary-search-tree.js";
 // import AVLTree from "../datastructures/avl-tree/avl-tree.js";
+// import RedBlackTree from "../datastructures/RedBlackTree/red-black-tree.js";
 const AVLTree = require("data-structures-and-algorithms").AVLTree;
 const BinarySearchTree = require("data-structures-and-algorithms").BST;
 const SplayTree = require("data-structures-and-algorithms").SplayTree;
+const RedBlackTree = require("data-structures-and-algorithms").RedBlackTree;
 
 const mapDispatchToProps = (dispatch) => {
   return ({
@@ -19,21 +21,15 @@ const mapDispatchToProps = (dispatch) => {
 }
 const mapStateToProps = (store) => {
   return({
-    nodeCount: store.nodeCount,
+    treeType: store.treeType,
+    numberOfNodes: store.numberOfNodes,
   });
 };
 
 class Controller extends React.Component {
-
-  constructor(props){
-    super(props);
-    // this.tree = new BinarySearchTree();
-    this.tree = new AVLTree();
-  }
-  
   componentDidMount(){
     // this.tree = generateSpecificTree();
-    this.handleGenerateTree("AVLTree", 10);
+    this.handleGenerateTree(this.props.treeType, this.props.numberOfNodes);
     this.copyAndUpdateD3Data();
   }
 
@@ -61,9 +57,9 @@ class Controller extends React.Component {
     this.copyAndUpdateD3Data();
   }
 
-  handleGenerateTree = (type, numberOfNodes) => {
-    numberOfNodes = parseInt(numberOfNodes);
-    this.tree = generateTree(type, numberOfNodes);
+  handleGenerateTree = () => {
+    // numberOfNodes = parseInt(numberOfNodes);
+    this.tree = generateTree(this.props.treeType, this.props.numberOfNodes);
     this.copyAndUpdateD3Data();
   }
   
@@ -124,12 +120,13 @@ class Controller extends React.Component {
 }
 
 const generateSpecificTree = (values) => {
-  let tree = new SplayTree();
+  let tree = new RedBlackTree();
 
-  values = [66, 91, 21, 89, 39, 18, 54, 76, 66, 32]
+  values = [5, 2, 10, 1, 3];
   for(let i = 0; i < values.length; i++){
     tree.insert(values[i])
   }
+  tree.remove(5);
 
   return tree;
 }
@@ -182,6 +179,10 @@ const generateTree = (type, numberOfNodes) => {
     }
     case "SplayTree": {
       tree = new SplayTree();
+      break;
+    }
+    case "RedBlackTree": {
+      tree = new RedBlackTree();
       break;
     }
     default:{
