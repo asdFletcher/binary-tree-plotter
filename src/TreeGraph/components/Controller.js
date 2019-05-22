@@ -28,8 +28,8 @@ const mapStateToProps = (store) => {
 
 class Controller extends React.Component {
   componentDidMount(){
-    // this.tree = generateSpecificTree();
-    this.handleGenerateTree(this.props.treeType, this.props.numberOfNodes);
+    this.tree = generateSpecificTree();
+    // this.handleGenerateTree(this.props.treeType, this.props.numberOfNodes);
     this.copyAndUpdateD3Data();
   }
 
@@ -122,7 +122,7 @@ class Controller extends React.Component {
 const generateSpecificTree = (values) => {
   let tree = new RedBlackTree();
 
-  values = [5, 2, 10, 1, 3];
+  values = [ 82, 51, 86, 4, 76, 27, 31, 21, 90, 57 ];
   for(let i = 0; i < values.length; i++){
     tree.insert(values[i])
   }
